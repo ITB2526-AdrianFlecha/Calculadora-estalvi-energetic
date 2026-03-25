@@ -137,7 +137,7 @@ def calculadora_sostenibilitat_avanzada(dades):
         print(f"-> Límit despesa neteja anual objectiu: {(consum_any_neteja * 0.7):.2f} €")
 
 
-# Execució del cod
+# Execució del codi
 if __name__ == "__main__":
     try:
         dades_json = carregar_dades('dataclean.json')
