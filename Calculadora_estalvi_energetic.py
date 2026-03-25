@@ -143,4 +143,4 @@ if __name__ == "__main__":
         dades_json = carregar_dades('dataclean.json')
         calculadora_sostenibilitat_avanzada(dades_json)
     except FileNotFoundError:
-        print("Error: No s'ha trobat el fitxer 'dataclean.json.json'.")
+        print("Error: No s'ha trobat el fitxer 'dataclean.json'.")
