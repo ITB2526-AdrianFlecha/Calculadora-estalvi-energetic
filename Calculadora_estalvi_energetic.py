@@ -256,9 +256,10 @@ def menu_principal():
         print(" 3. Salir del programa")
         print("-" * 50)
 
-        opcio = input("Selecciona una opción (1-3): ")
+        opcio = input("Selecciona una opción (1-3): ").strip()
         print("-" * 50)
         print("\n")
+
         if opcio == '1':
             try:
                 # Carga los datos por defecto (dataclean.json)
@@ -284,9 +285,18 @@ def menu_principal():
         else:
             print("\n⚠️ Opción no válida. Por favor, elige 1, 2 o 3.")
 
-        # --- PAUSA VISUAL PARA EL USUARIO ---
-        # Esto detiene el bucle hasta que el usuario pulse una tecla
-        input("\n➡️  Pulsa ENTER para volver al menú principal...")
+        # --- PREGUNTA CLARA AL USUARIO ---
+        if opcio in ['1', '2']:  # Solo preguntar si ejecutó una calculadora
+            print("\n" + "=" * 50)
+            while True:
+                accion = input("¿Deseas volver al menú principal? (S/N): ").strip().upper()
+                if accion == 'S':
+                    break
+                elif accion == 'N':
+                    print("\n👋 ¡Hasta pronto! Cerrando la calculadora...\n")
+                    exit()
+                else:
+                    print("⚠️ Por favor, introduce 'S' para sí o 'N' para no.")
 
 
 # Ejecución segura del script
