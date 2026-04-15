@@ -1,0 +1,1 @@
+{\n  \"name\": \"calculadora-estalvi-energetic\",\n  \"version\": \"1.0.0\",\n  \"description\": \"Calculadora per l'estalvi energètic\",\n  \"main\": \"index.js\",\n  \"scripts\": {\n    \"start\": \"vite\",\n    \"build\": \"vite build\"\n  },\n  \"devDependencies\": {\n    \"vite\": \"latest\",\n    \"chart.js\": \"latest\"\n  }\n}
