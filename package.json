@@ -1,1 +1,24 @@
-{\n  \"name\": \"calculadora-estalvi-energetic\",\n  \"version\": \"1.0.0\",\n  \"description\": \"Calculadora per l'estalvi energètic\",\n  \"main\": \"index.js\",\n  \"scripts\": {\n    \"start\": \"vite\",\n    \"build\": \"vite build\"\n  },\n  \"devDependencies\": {\n    \"vite\": \"latest\",\n    \"chart.js\": \"latest\"\n  }\n}
+{
+  "name": "calculadora-estalvi-energetic",
+  "version": "1.0.0",
+  "description": "Calculadora d'anàlisis de consumos energètics i estalvi amb projeccions",
+  "main": "public/App.js",
+  "type": "module",
+  "scripts": {
+    "dev": "python -m http.server 8000 --directory public",
+    "start": "python -m http.server 8000 --directory public",
+    "serve": "python -m http.server 8000 --directory public"
+  },
+  "keywords": [
+    "energía",
+    "sostenibilidad",
+    "consumo",
+    "proyecciones",
+    "Barcelona"
+  ],
+  "author": "ITB2526-AdrianFlecha",
+  "license": "MIT",
+  "dependencies": {
+    "chart.js": "^4.4.0"
+  }
+}

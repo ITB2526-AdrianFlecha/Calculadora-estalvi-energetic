@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora d'Estalvi Energètic</title>
+    <link rel="stylesheet" href="./styles.css">
+    <link rel="stylesheet" href="./theme.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+    <div id="app" class="app-container">
+        <!-- Navegació -->
+        <nav class="navbar">
+            <div class="navbar-content">
+                <h1 class="navbar-title">⚡ Calculadora d'Estalvi Energètic</h1>
+                <div class="nav-buttons">
+                    <button id="navDashboard" class="nav-btn active" data-page="dashboard">📊 Dashboard</button>
+                    <button id="navDataForm" class="nav-btn" data-page="dataform">📝 Entrada de Dades</button>
+                    <button id="navAnalisis" class="nav-btn" data-page="analisis">📈 Anàlisis Detallat</button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Contenidor principal -->
+        <main class="main-container">
+            <!-- Dashboard Page -->
+            <div id="dashboard-page" class="page active">
+                <div id="dashboard-content"></div>
+            </div>
+
+            <!-- DataForm Page -->
+            <div id="dataform-page" class="page">
+                <div id="dataform-content"></div>
+            </div>
+
+            <!-- Analisis Page -->
+            <div id="analisis-page" class="page">
+                <div id="analisis-content"></div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>&copy; 2026 Calculadora d'Estalvi Energètic | Desenvolupat per optimitzar recursos</p>
+        </footer>
+    </div>
+
+    <script src="../src/App.js" type="module"></script>
+</body>
+</html>
