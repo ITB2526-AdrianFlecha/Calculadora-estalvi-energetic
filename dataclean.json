@@ -1,0 +1,79 @@
+{
+  "Consumo_Energetico_TIC": [
+    { "fecha": "2025-01-01", "consumo_total_kWh": 157.47, "produccion_solar_kWh": 42.56, "importado_red_kWh": 117.53, "autoconsumo_kWh": 39.94 },
+    { "fecha": "2025-01-02", "consumo_total_kWh": 159.55, "produccion_solar_kWh": 48.86, "importado_red_kWh": 114.12, "autoconsumo_kWh": 45.43 },
+    { "fecha": "2025-01-03", "consumo_total_kWh": 189.50, "produccion_solar_kWh": 36.48, "importado_red_kWh": 153.24, "autoconsumo_kWh": 36.26 },
+    { "fecha": "2025-01-04", "consumo_total_kWh": 201.76, "produccion_solar_kWh": 44.18, "importado_red_kWh": 158.01, "autoconsumo_kWh": 43.75 },
+    { "fecha": "2025-01-05", "consumo_total_kWh": 199.49, "produccion_solar_kWh": 41.99, "importado_red_kWh": 157.64, "autoconsumo_kWh": 41.85 },
+    { "fecha": "2025-01-06", "consumo_total_kWh": 191.55, "produccion_solar_kWh": 40.55, "importado_red_kWh": 153.63, "autoconsumo_kWh": 37.92 },
+    { "fecha": "2025-01-07", "consumo_total_kWh": 200.19, "produccion_solar_kWh": 53.26, "importado_red_kWh": 148.83, "autoconsumo_kWh": 51.36 },
+    { "fecha": "2025-01-08", "consumo_total_kWh": 467.60, "produccion_solar_kWh": 47.81, "importado_red_kWh": 419.79, "autoconsumo_kWh": 47.81 },
+    { "fecha": "2025-01-09", "consumo_total_kWh": 461.78, "produccion_solar_kWh": 52.03, "importado_red_kWh": 409.75, "autoconsumo_kWh": 52.03 },
+    { "fecha": "2025-01-10", "consumo_total_kWh": 425.97, "produccion_solar_kWh": 49.33, "importado_red_kWh": 376.64, "autoconsumo_kWh": 49.33 },
+    { "fecha": "2025-01-11", "consumo_total_kWh": 201.40, "produccion_solar_kWh": 40.03, "importado_red_kWh": 162.86, "autoconsumo_kWh": 38.54 },
+    { "fecha": "2025-01-12", "consumo_total_kWh": 214.71, "produccion_solar_kWh": 57.00, "importado_red_kWh": 159.58, "autoconsumo_kWh": 55.13 },
+    { "fecha": "2025-01-13", "consumo_total_kWh": 491.00, "produccion_solar_kWh": 55.89, "importado_red_kWh": 435.11, "autoconsumo_kWh": 55.89 },
+    { "fecha": "2025-01-14", "consumo_total_kWh": 484.29, "produccion_solar_kWh": 57.49, "importado_red_kWh": 426.80, "autoconsumo_kWh": 57.49 },
+    { "fecha": "2025-01-15", "consumo_total_kWh": 479.75, "produccion_solar_kWh": 55.58, "importado_red_kWh": 424.17, "autoconsumo_kWh": 55.58 },
+    { "fecha": "2025-01-16", "consumo_total_kWh": 490.80, "produccion_solar_kWh": 40.94, "importado_red_kWh": 449.86, "autoconsumo_kWh": 40.94 },
+    { "fecha": "2025-01-17", "consumo_total_kWh": 430.68, "produccion_solar_kWh": 52.90, "importado_red_kWh": 377.78, "autoconsumo_kWh": 52.90 },
+    { "fecha": "2025-01-18", "consumo_total_kWh": 198.59, "produccion_solar_kWh": 56.17, "importado_red_kWh": 145.59, "autoconsumo_kWh": 53.00 },
+    { "fecha": "2025-01-19", "consumo_total_kWh": 202.16, "produccion_solar_kWh": 35.53, "importado_red_kWh": 166.83, "autoconsumo_kWh": 35.33 },
+    { "fecha": "2025-01-20", "consumo_total_kWh": 488.39, "produccion_solar_kWh": 32.00, "importado_red_kWh": 456.39, "autoconsumo_kWh": 32.00 },
+    { "fecha": "2025-01-21", "consumo_total_kWh": 500.34, "produccion_solar_kWh": 30.24, "importado_red_kWh": 470.10, "autoconsumo_kWh": 30.24 },
+    { "fecha": "2025-01-22", "consumo_total_kWh": 165.55, "produccion_solar_kWh": 5.87, "importado_red_kWh": 159.68, "autoconsumo_kWh": 5.87 }
+  ],
+  "Emisiones_CO2_Evitadas": [
+    { "fecha": "2025-01-01", "co2_evitado_t": 0.020, "carbon_estandar_ahorrado_t": 0.017 },
+    { "fecha": "2025-01-02", "co2_evitado_t": 0.023, "carbon_estandar_ahorrado_t": 0.020 },
+    { "fecha": "2025-01-03", "co2_evitado_t": 0.017, "carbon_estandar_ahorrado_t": 0.015 },
+    { "fecha": "2025-01-04", "co2_evitado_t": 0.021, "carbon_estandar_ahorrado_t": 0.018 },
+    { "fecha": "2025-01-05", "co2_evitado_t": 0.020, "carbon_estandar_ahorrado_t": 0.017 },
+    { "fecha": "2025-01-06", "co2_evitado_t": 0.019, "carbon_estandar_ahorrado_t": 0.016 },
+    { "fecha": "2025-01-07", "co2_evitado_t": 0.025, "carbon_estandar_ahorrado_t": 0.021 },
+    { "fecha": "2025-01-08", "co2_evitado_t": 0.023, "carbon_estandar_ahorrado_t": 0.019 },
+    { "fecha": "2025-01-09", "co2_evitado_t": 0.025, "carbon_estandar_ahorrado_t": 0.021 },
+    { "fecha": "2025-01-10", "co2_evitado_t": 0.023, "carbon_estandar_ahorrado_t": 0.020 },
+    { "fecha": "2025-01-11", "co2_evitado_t": 0.019, "carbon_estandar_ahorrado_t": 0.016 },
+    { "fecha": "2025-01-12", "co2_evitado_t": 0.027, "carbon_estandar_ahorrado_t": 0.023 },
+    { "fecha": "2025-01-13", "co2_evitado_t": 0.027, "carbon_estandar_ahorrado_t": 0.022 },
+    { "fecha": "2025-01-14", "co2_evitado_t": 0.027, "carbon_estandar_ahorrado_t": 0.023 },
+    { "fecha": "2025-01-15", "co2_evitado_t": 0.026, "carbon_estandar_ahorrado_t": 0.022 },
+    { "fecha": "2025-01-16", "co2_evitado_t": 0.019, "carbon_estandar_ahorrado_t": 0.016 },
+    { "fecha": "2025-01-17", "co2_evitado_t": 0.025, "carbon_estandar_ahorrado_t": 0.021 },
+    { "fecha": "2025-01-18", "co2_evitado_t": 0.027, "carbon_estandar_ahorrado_t": 0.022 },
+    { "fecha": "2025-01-19", "co2_evitado_t": 0.017, "carbon_estandar_ahorrado_t": 0.014 },
+    { "fecha": "2025-01-20", "co2_evitado_t": 0.015, "carbon_estandar_ahorrado_t": 0.013 },
+    { "fecha": "2025-01-21", "co2_evitado_t": 0.014, "carbon_estandar_ahorrado_t": 0.012 },
+    { "fecha": "2025-01-22", "co2_evitado_t": 0.003, "carbon_estandar_ahorrado_t": 0.002 }
+  ],
+  "Infraestructura_Telecomunicaciones": [
+    { "proveedor": "DIGI", "periodo": "Mayo", "tipo_impacto": "Alcance 3 - Conectividad", "servicio": "Fibra 1Gb", "coste_total_euros": 30.00 },
+    { "proveedor": "DIGI", "periodo": "Mayo", "tipo_impacto": "Alcance 3 - Conectividad", "servicio": "Fibra 1Gb", "coste_total_euros": 30.00 },
+    { "proveedor": "O2", "periodo": "Marzo", "tipo_impacto": "Alcance 3 - Conectividad", "servicio": "Fibra 1Gb y Móvil 200GB", "coste_total_euros": 50.00 }
+  ],
+  "Consumibles_Impresion": [
+    { "fecha": "2024-05-31", "proveedor": "Lyreco", "descripcion": "Papel A4 y Recambios Pizarra", "coste_total_euros": 261.24, "detalles": "30x Papel A4, 70x Recambios Pizarra" },
+    { "fecha": "2024-04-30", "proveedor": "Lyreco", "descripcion": "Papel A4 y Marcadores", "coste_total_euros": 277.13, "detalles": "15x Papel A4, 115x Marcadores/Borradores" },
+    { "fecha": "2024-10-16 / 2024-11-07", "proveedor": "No disponible", "descripcion": "Papel Navigator Universal A4 80G", "coste_total_euros": 198.56, "cantidad": "30 packs (15.000 hojas)" },
+    { "fecha": "2024-06-19", "proveedor": "No disponible", "descripcion": "Recambio Marcador Pizarra Negro", "coste_total_euros": 34.36, "cantidad": "40 unidades" }
+  ],
+  "Impacto_Indirecto_Instalaciones": {
+    "descripcion": "Impactos derivados de la presencialidad, susceptibles de reducción mediante teletrabajo y digitalización.",
+    "agua": [
+      { "fecha": "2024-02-25", "consumo_litros": 5000, "coste_euros": "No disponible" },
+      { "fecha": "2024-02-28", "consumo_litros": 7500, "coste_euros": "No disponible" },
+      { "fecha": "2024-02-29", "consumo_litros": 3350, "coste_euros": "No disponible", "nota": "Gráfico parcial (no incluye todas las horas del día)" }
+    ],
+    "limpieza_y_mantenimiento": [
+      { "fecha": "2024-06-20", "coste_total_euros": 750.26, "descripcion": "Papel secamanos, sacos industriales, bolsas basura, papel WC, jabón" },
+      { "fecha": "2024-05-27", "coste_total_euros": 454.72, "descripcion": "Limpieza jardín/patios, transporte deixalleria, bolsa horas especialistas" }
+    ],
+    "otros_no_clasificados": [
+      { "fecha": "2024-09-13", "descripcion": "Trabajos extraordinariaos hierro y madera (puertas y barandillas)", "coste_total_euros": 1012.98 },
+      { "fecha": "2024-07-05", "descripcion": "Reparación urgencia Aire Acondicionado (compresor, sonda, limpieza)", "coste_total_euros": 348.48 },
+      { "fecha": "2024-05-23", "descripcion": "Renovación cuadro eléctrico (QGP), eliminación circuitos obsoletos y control lumínico", "coste_total_euros": 2548.02 },
+      { "categoria": "Indicadores Dispositivos Móviles", "observaciones": "Promedio de 20-60% de uso de móviles personales en aula entre nov 2024 y ene 2025" }
+    ]
+  }
+}
