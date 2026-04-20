@@ -4,6 +4,166 @@ const MONTHLY_FACTORS = [1.0, 0.95, 0.9, 0.8, 0.8, 0.9, 0.1, 0.05, 0.9, 1.0, 1.0
 const SCHOOL_YEAR_START = { month: 9, day: 1 };
 const SCHOOL_YEAR_END = { month: 6, day: 30 };
 
+// Estrategias de reducción de consumo (30% en 3 años)
+const REDUCTION_STRATEGIES = {
+    energia: {
+        name: 'Energía Eléctrica',
+        icon: '⚡',
+        reduction: 0.30,
+        actions: [
+            {
+                title: 'Instalación de LED eficientes',
+                description: 'Cambiar toda la iluminación a LED reduce 40% del consumo de iluminación',
+                impact: 0.08,
+                timeline: 'Mes 1-3',
+                cost: 'Alto',
+                measurable: 'kWh reducidos por mes'
+            },
+            {
+                title: 'Sistema de control automático de luz',
+                description: 'Sensores de presencia y luz natural reducen consumo innecesario',
+                impact: 0.07,
+                timeline: 'Mes 4-6',
+                cost: 'Medio',
+                measurable: 'Horas de luz reducidas'
+            },
+            {
+                title: 'Optimización de equipos HVAC',
+                description: 'Mantenimiento preventivo y programación inteligente',
+                impact: 0.10,
+                timeline: 'Mes 7-12',
+                cost: 'Medio',
+                measurable: 'Temperatura controlada automáticamente'
+            },
+            {
+                title: 'Auditoría energética y formación',
+                description: 'Identificar consumos anómalos y concienciar al personal',
+                impact: 0.05,
+                timeline: 'Mes 1',
+                cost: 'Bajo',
+                measurable: 'Comportamientos de consumo mejorados'
+            }
+        ]
+    },
+    agua: {
+        name: 'Agua',
+        icon: '💧',
+        reduction: 0.30,
+        actions: [
+            {
+                title: 'Instalación de grifos de bajo flujo',
+                description: 'Grifos y duchas con aireadores que reducen 30-50% del consumo',
+                impact: 0.12,
+                timeline: 'Mes 1-3',
+                cost: 'Bajo',
+                measurable: 'Litros/día reducidos'
+            },
+            {
+                title: 'Reparación de fugas',
+                description: 'Una fuga pequeña puede perder 200L/día. Revisión trimestral',
+                impact: 0.08,
+                timeline: 'Mes 1',
+                cost: 'Bajo',
+                measurable: 'Fugas reparadas'
+            },
+            {
+                title: 'Sistema de riego inteligente',
+                description: 'Sensor de humedad y riego automático según necesidad',
+                impact: 0.07,
+                timeline: 'Mes 4-6',
+                cost: 'Medio',
+                measurable: 'Agua de riego optimizada'
+            },
+            {
+                title: 'Reutilización de aguas grises',
+                description: 'Sistemas para reutilizar agua de lluvia y aires acondicionados',
+                impact: 0.03,
+                timeline: 'Mes 13-24',
+                cost: 'Alto',
+                measurable: 'Litros reutilizados/mes'
+            }
+        ]
+    },
+    consumibles: {
+        name: 'Consumibles de Oficina',
+        icon: '📄',
+        reduction: 0.30,
+        actions: [
+            {
+                title: 'Digitalización de procesos',
+                description: 'Transitar a documentos digitales reduce papel en 80%',
+                impact: 0.15,
+                timeline: 'Mes 1-6',
+                cost: 'Medio',
+                measurable: 'Hojas de papel/mes'
+            },
+            {
+                title: 'Compra de papel reciclado',
+                description: 'Uso exclusivo de papel con certificación ambiental',
+                impact: 0.08,
+                timeline: 'Mes 1',
+                cost: 'Bajo',
+                measurable: 'Papel reciclado %'
+            },
+            {
+                title: 'Optimización de inventarios',
+                description: 'Sistema de control de existencias para evitar compras excesivas',
+                impact: 0.05,
+                timeline: 'Mes 2-4',
+                cost: 'Bajo',
+                measurable: 'Compras reducidas %'
+            },
+            {
+                title: 'Programas de reutilización',
+                description: 'Recuperar y reutilizar cartuchos, carpetas, sobres',
+                impact: 0.02,
+                timeline: 'Mes 1',
+                cost: 'Bajo',
+                measurable: 'Items reutilizados'
+            }
+        ]
+    },
+    limpieza: {
+        name: 'Productos de Limpieza',
+        icon: '🧹',
+        reduction: 0.30,
+        actions: [
+            {
+                title: 'Productos de limpieza ecológicos',
+                description: 'Sustituir por productos biodegradables y concentrados',
+                impact: 0.10,
+                timeline: 'Mes 1-3',
+                cost: 'Bajo',
+                measurable: 'Productos tóxicos eliminados'
+            },
+            {
+                title: 'Microfiber y técnicas de limpieza en seco',
+                description: 'Trapos de microfibra reducen uso de agua y químicos',
+                impact: 0.08,
+                timeline: 'Mes 2-4',
+                cost: 'Bajo',
+                measurable: 'Agua de limpieza reducida'
+            },
+            {
+                title: 'Formación de personal de limpieza',
+                description: 'Técnicas eficientes y dosificación correcta de productos',
+                impact: 0.07,
+                timeline: 'Mes 1',
+                cost: 'Bajo',
+                measurable: 'Eficiencia mejorada'
+            },
+            {
+                title: 'Compra a granel y dosificadores',
+                description: 'Reducir envases y usar sistemas de dosificación automática',
+                impact: 0.05,
+                timeline: 'Mes 3-6',
+                cost: 'Medio',
+                measurable: 'Envases reducidos %'
+            }
+        ]
+    }
+};
+
 // ===== ALMACENAMIENTO GLOBAL =====
 let globalData = {
     original: [],
@@ -12,6 +172,7 @@ let globalData = {
 
 let allCharts = {};
 let editingId = null;
+let baselineMetrics = null;
 
 // ===== INICIALIZACIÓN =====
 document.addEventListener('DOMContentLoaded', async () => {
@@ -27,13 +188,13 @@ async function initializeData() {
         const data = await response.json();
         parseOriginalData(data);
         loadCustomDataFromStorage();
+        baselineMetrics = calculateAllMetrics(getAllData());
     } catch (error) {
         console.error('Error al cargar datos:', error);
     }
 }
 
 function parseOriginalData(data) {
-    // Energía
     if (data.Consumo_Energetico_TIC) {
         data.Consumo_Energetico_TIC.forEach(item => {
             globalData.original.push({
@@ -44,7 +205,6 @@ function parseOriginalData(data) {
         });
     }
 
-    // CO2
     if (data.Emisiones_CO2_Evitadas) {
         data.Emisiones_CO2_Evitadas.forEach(item => {
             globalData.original.push({
@@ -54,7 +214,6 @@ function parseOriginalData(data) {
         });
     }
 
-    // Agua
     if (data.Impacto_Indirecto_Instalaciones?.agua) {
         data.Impacto_Indirecto_Instalaciones.agua.forEach(item => {
             globalData.original.push({
@@ -65,7 +224,6 @@ function parseOriginalData(data) {
         });
     }
 
-    // Consumibles
     if (data.Consumibles_Impresion) {
         data.Consumibles_Impresion.forEach(item => {
             globalData.original.push({
@@ -76,7 +234,6 @@ function parseOriginalData(data) {
         });
     }
 
-    // Limpieza
     if (data.Impacto_Indirecto_Instalaciones?.limpieza_y_mantenimiento) {
         data.Impacto_Indirecto_Instalaciones.limpieza_y_mantenimiento.forEach(item => {
             globalData.original.push({
@@ -169,7 +326,9 @@ function calculateEnergyMetrics(allData) {
         total,
         totalEscolar: schoolYearTotal,
         promedio: dayCount > 0 ? total / dayCount : 0,
-        dataPoints: dayCount
+        promedioEscolar: schoolDayCount > 0 ? schoolYearTotal / schoolDayCount : 0,
+        dataPoints: dayCount,
+        unit: 'kWh'
     };
 }
 
@@ -194,7 +353,9 @@ function calculateWaterMetrics(allData) {
         total,
         totalEscolar: schoolYearTotal,
         promedio: dayCount > 0 ? total / dayCount : 0,
-        dataPoints: dayCount
+        promedioEscolar: schoolDayCount > 0 ? schoolYearTotal / schoolDayCount : 0,
+        dataPoints: dayCount,
+        unit: 'm³'
     };
 }
 
@@ -226,7 +387,9 @@ function calculateConsumablesMetrics(allData) {
         total,
         totalEscolar: schoolYearTotal,
         promedio: monthCount > 0 ? total / monthCount : 0,
-        dataPoints: monthCount
+        promedioEscolar: schoolMonthCount > 0 ? schoolYearTotal / schoolMonthCount : 0,
+        dataPoints: monthCount,
+        unit: '€'
     };
 }
 
@@ -258,7 +421,9 @@ function calculateCleaningMetrics(allData) {
         total,
         totalEscolar: schoolYearTotal,
         promedio: monthCount > 0 ? total / monthCount : 0,
-        dataPoints: monthCount
+        promedioEscolar: schoolMonthCount > 0 ? schoolYearTotal / schoolMonthCount : 0,
+        dataPoints: monthCount,
+        unit: '€'
     };
 }
 
@@ -392,6 +557,28 @@ function getSavingSuggestions(allData) {
     return suggestions.slice(0, 5);
 }
 
+function calculateReductionImpact(metricType, year = 1) {
+    if (!baselineMetrics) return {};
+
+    const strategy = REDUCTION_STRATEGIES[metricType];
+    if (!strategy) return {};
+
+    const baseline = baselineMetrics[metricType];
+    const reductionPerYear = strategy.reduction / 3;
+    const currentReduction = reductionPerYear * year;
+
+    const projectedValue = baseline.promedio * 365 * (1 - currentReduction) * Math.pow(1 + INFLATION_RATE, year);
+
+    return {
+        baseline: baseline.promedio * 365,
+        year1: baseline.promedio * 365 * (1 - reductionPerYear) * (1 + INFLATION_RATE),
+        year2: baseline.promedio * 365 * (1 - reductionPerYear * 2) * Math.pow(1 + INFLATION_RATE, 2),
+        year3: baseline.promedio * 365 * (1 - reductionPerYear * 3) * Math.pow(1 + INFLATION_RATE, 3),
+        totalSavings: (baseline.promedio * 365 * currentReduction),
+        percentReduction: (currentReduction * 100).toFixed(2)
+    };
+}
+
 // ===== NAVEGACIÓN =====
 function setupNavigation() {
     const navButtons = document.querySelectorAll('.nav-btn');
@@ -403,27 +590,25 @@ function setupNavigation() {
 }
 
 function renderPage(pageName) {
-    // Destruir gráficos anteriores
     Object.values(allCharts).forEach(chart => {
         if (chart) chart.destroy();
     });
     allCharts = {};
 
-    // Amagar totes les pàgines
     document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
     document.getElementById(`${pageName}-page`).classList.add('active');
 
-    // Actualitzar botons
     document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
     document.querySelector(`[data-page="${pageName}"]`).classList.add('active');
 
-    // Renderizar página
     if (pageName === 'dashboard') {
         renderDashboard();
     } else if (pageName === 'dataform') {
         renderDataForm();
     } else if (pageName === 'analisis') {
         renderAnalisis();
+    } else if (pageName === 'reduction') {
+        renderReductionStrategies();
     }
 }
 
@@ -539,7 +724,6 @@ function renderDashboard() {
         </div>
     `;
 
-    // Renderizar gráficos
     renderEnergyChart();
     renderWaterChart();
     renderConsumablesChart();
@@ -547,7 +731,6 @@ function renderDashboard() {
     renderCO2Chart();
     renderSpecialPeriodsChart();
 
-    // Renderizar sugerencias
     const suggestionsList = document.getElementById('suggestions-list');
     const suggestions = getSavingSuggestions(allData);
     suggestions.forEach(suggestion => {
@@ -894,7 +1077,6 @@ function renderDataForm() {
         </div>
     `;
 
-    // Event listeners
     const form = document.getElementById('data-entry-form');
     form.addEventListener('submit', (e) => {
         e.preventDefault();
@@ -1034,16 +1216,16 @@ function renderAnalisis() {
     let html = `
         <div class="analysis-container">
             <div class="analysis-header">
-                <h2>📈 Anàlisis Detallat</h2>
-                <p>Desglossament complet dels consumos i projeccions</p>
+                <h2>📈 Anàlisis Detallat dels 8 Càlculs</h2>
+                <p>Desglossament complet dels consumos i projeccions per període</p>
             </div>
 
             <div class="metrics-detailed">
                 <div class="metric-card-detailed">
-                    <h4>⚡ Energía</h4>
+                    <h4>⚡ Energía - Año Completo</h4>
                     <div class="metric-values">
                         <div class="metric-value">
-                            <span class="label">Total Actual</span>
+                            <span class="label">Consumo Anual</span>
                             <span class="value">${formatNumber(metrics.energia.total)} kWh</span>
                         </div>
                         <div class="metric-value">
@@ -1054,18 +1236,32 @@ function renderAnalisis() {
                             <span class="label">Proyección 2026</span>
                             <span class="value highlight">${formatNumber(projections.energia.yearProjection)} kWh</span>
                         </div>
+                    </div>
+                </div>
+
+                <div class="metric-card-detailed">
+                    <h4>⚡ Energía - Período Escolar (Sept-Jun)</h4>
+                    <div class="metric-values">
                         <div class="metric-value">
-                            <span class="label">Año Escolar</span>
+                            <span class="label">Consumo Período</span>
                             <span class="value">${formatNumber(metrics.energia.totalEscolar)} kWh</span>
+                        </div>
+                        <div class="metric-value">
+                            <span class="label">Promedio Diario</span>
+                            <span class="value">${formatNumber(metrics.energia.promedioEscolar)} kWh</span>
+                        </div>
+                        <div class="metric-value">
+                            <span class="label">% vs Año Completo</span>
+                            <span class="value highlight">${metrics.energia.total > 0 ? ((metrics.energia.totalEscolar / metrics.energia.total) * 100).toFixed(1) : 0}%</span>
                         </div>
                     </div>
                 </div>
 
                 <div class="metric-card-detailed">
-                    <h4>💧 Agua</h4>
+                    <h4>💧 Agua - Año Completo</h4>
                     <div class="metric-values">
                         <div class="metric-value">
-                            <span class="label">Total Actual</span>
+                            <span class="label">Consumo Anual</span>
                             <span class="value">${formatNumber(metrics.agua.total)} m³</span>
                         </div>
                         <div class="metric-value">
@@ -1076,45 +1272,87 @@ function renderAnalisis() {
                             <span class="label">Proyección 2026</span>
                             <span class="value highlight">${formatNumber(projections.agua.yearProjection)} m³</span>
                         </div>
+                    </div>
+                </div>
+
+                <div class="metric-card-detailed">
+                    <h4>💧 Agua - Período Escolar (Sept-Jun)</h4>
+                    <div class="metric-values">
                         <div class="metric-value">
-                            <span class="label">Año Escolar</span>
+                            <span class="label">Consumo Período</span>
                             <span class="value">${formatNumber(metrics.agua.totalEscolar)} m³</span>
+                        </div>
+                        <div class="metric-value">
+                            <span class="label">Promedio Diario</span>
+                            <span class="value">${formatNumber(metrics.agua.promedioEscolar)} m³</span>
+                        </div>
+                        <div class="metric-value">
+                            <span class="label">% vs Año Completo</span>
+                            <span class="value highlight">${metrics.agua.total > 0 ? ((metrics.agua.totalEscolar / metrics.agua.total) * 100).toFixed(1) : 0}%</span>
                         </div>
                     </div>
                 </div>
 
                 <div class="metric-card-detailed">
-                    <h4>📄 Consumibles d'Oficina</h4>
+                    <h4>📄 Consumibles - Año Completo</h4>
                     <div class="metric-values">
                         <div class="metric-value">
-                            <span class="label">Total Gastat</span>
+                            <span class="label">Gasto Anual</span>
                             <span class="value">${formatNumber(projections.consumibles.yearProjection)} €</span>
                         </div>
                         <div class="metric-value">
                             <span class="label">Promedio Mensual</span>
                             <span class="value">${formatNumber(projections.consumibles.yearProjection / 12)} €</span>
                         </div>
+                    </div>
+                </div>
+
+                <div class="metric-card-detailed">
+                    <h4>📄 Consumibles - Período Escolar (Sept-Jun)</h4>
+                    <div class="metric-values">
                         <div class="metric-value">
-                            <span class="label">Año Escolar</span>
+                            <span class="label">Gasto Período</span>
                             <span class="value">${formatNumber(metrics.consumibles.totalEscolar)} €</span>
+                        </div>
+                        <div class="metric-value">
+                            <span class="label">Promedio Mensual</span>
+                            <span class="value">${formatNumber(metrics.consumibles.promedioEscolar)} €</span>
+                        </div>
+                        <div class="metric-value">
+                            <span class="label">% vs Año Completo</span>
+                            <span class="value highlight">${metrics.consumibles.total > 0 ? ((metrics.consumibles.totalEscolar / metrics.consumibles.total) * 100).toFixed(1) : 0}%</span>
                         </div>
                     </div>
                 </div>
 
                 <div class="metric-card-detailed">
-                    <h4>🧹 Productes de Neteja</h4>
+                    <h4>🧹 Limpieza - Año Completo</h4>
                     <div class="metric-values">
                         <div class="metric-value">
-                            <span class="label">Total Gastat</span>
+                            <span class="label">Gasto Anual</span>
                             <span class="value">${formatNumber(projections.limpieza.yearProjection)} €</span>
                         </div>
                         <div class="metric-value">
                             <span class="label">Promedio Mensual</span>
                             <span class="value">${formatNumber(projections.limpieza.yearProjection / 12)} €</span>
                         </div>
+                    </div>
+                </div>
+
+                <div class="metric-card-detailed">
+                    <h4>🧹 Limpieza - Período Escolar (Sept-Jun)</h4>
+                    <div class="metric-values">
                         <div class="metric-value">
-                            <span class="label">Año Escolar</span>
+                            <span class="label">Gasto Período</span>
                             <span class="value">${formatNumber(metrics.limpieza.totalEscolar)} €</span>
+                        </div>
+                        <div class="metric-value">
+                            <span class="label">Promedio Mensual</span>
+                            <span class="value">${formatNumber(metrics.limpieza.promedioEscolar)} €</span>
+                        </div>
+                        <div class="metric-value">
+                            <span class="label">% vs Año Completo</span>
+                            <span class="value highlight">${metrics.limpieza.total > 0 ? ((metrics.limpieza.totalEscolar / metrics.limpieza.total) * 100).toFixed(1) : 0}%</span>
                         </div>
                     </div>
                 </div>
@@ -1209,7 +1447,438 @@ function renderAnalisis() {
     container.innerHTML = html;
 }
 
-// ===== EXPORTAR A HTML =====
+// ===== ESTRATEGIAS DE REDUCCIÓN =====
+function renderReductionStrategies() {
+    const container = document.getElementById('reduction-content');
+
+    let html = `
+        <div class="reduction-container">
+            <div class="reduction-header">
+                <h2>🌱 Estratègies de Reducció de Consum (30% en 3 anys)</h2>
+                <p>Accions concretes per aconseguir un estalvi del 30% en les emissions i costos</p>
+            </div>
+    `;
+
+    Object.keys(REDUCTION_STRATEGIES).forEach(metricType => {
+        const strategy = REDUCTION_STRATEGIES[metricType];
+        const impact = calculateReductionImpact(metricType, 3);
+
+        html += `
+            <div class="strategy-section">
+                <div class="strategy-header">
+                    <h3>${strategy.icon} ${strategy.name}</h3>
+                    <div class="strategy-goal">
+                        <span class="goal-badge">Objectiu: Reducció del 30% en 3 anys</span>
+                    </div>
+                </div>
+
+                <div class="strategy-metrics">
+                    <div class="metric-box">
+                        <div class="metric-label">Baseline (2026)</div>
+                        <div class="metric-value-large">${formatNumber(impact.baseline)}</div>
+                    </div>
+                    <div class="metric-box">
+                        <div class="metric-label">Any 1 (2027)</div>
+                        <div class="metric-value-large">${formatNumber(impact.year1)}</div>
+                        <div class="metric-subtitle">-${((impact.baseline - impact.year1) / impact.baseline * 100).toFixed(1)}%</div>
+                    </div>
+                    <div class="metric-box">
+                        <div class="metric-label">Any 2 (2028)</div>
+                        <div class="metric-value-large">${formatNumber(impact.year2)}</div>
+                        <div class="metric-subtitle">-${((impact.baseline - impact.year2) / impact.baseline * 100).toFixed(1)}%</div>
+                    </div>
+                    <div class="metric-box">
+                        <div class="metric-label">Any 3 (2029)</div>
+                        <div class="metric-value-large">${formatNumber(impact.year3)}</div>
+                        <div class="metric-subtitle">-${((impact.baseline - impact.year3) / impact.baseline * 100).toFixed(1)}%</div>
+                    </div>
+                </div>
+
+                <div class="actions-grid">
+        `;
+
+        strategy.actions.forEach((action, idx) => {
+            html += `
+                <div class="action-card">
+                    <div class="action-number">Acció ${idx + 1}</div>
+                    <h4>${action.title}</h4>
+                    <p class="action-description">${action.description}</p>
+
+                    <div class="action-details">
+                        <div class="detail-row">
+                            <span class="detail-label">Impacte estimat:</span>
+                            <span class="detail-value">${(action.impact * 100).toFixed(1)}%</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Cronograma:</span>
+                            <span class="detail-value">${action.timeline}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Cost:</span>
+                            <span class="detail-value cost-${action.cost.toLowerCase()}">${action.cost}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Indicador:</span>
+                            <span class="detail-value">${action.measurable}</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+
+        html += `
+                </div>
+
+                <div class="circular-economy-section">
+                    <h4>🔄 Princips d'Economia Circular</h4>
+                    <ul class="circular-list">
+                        <li><strong>Reduir:</strong> Minimitzar la quantitat de recursos consumits</li>
+                        <li><strong>Reutilitzar:</strong> Donar una segona vida als productes</li>
+                        <li><strong>Reciclar:</strong> Processar materials per crear nous productes</li>
+                        <li><strong>Recuperar:</strong> Obtenir energia o materials de residus</li>
+                    </ul>
+                </div>
+
+                <div class="results-summary">
+                    <h4>📊 Resultats Esperats</h4>
+                    <div class="summary-box">
+                        <div class="summary-row">
+                            <span>Estalvi total en 3 anys:</span>
+                            <span class="summary-value">${formatNumber(impact.totalSavings * 3)}</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Reducció percentual acumulada:</span>
+                            <span class="summary-value highlight">${impact.percentReduction}%</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Impacte ambiental:</span>
+                            <span class="summary-value">Reducció significativa de CO₂</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    });
+
+    html += `
+            <div class="timeline-section">
+                <h3>📅 Cronograma d'Implementació (3 anys)</h3>
+                <div class="timeline">
+                    <div class="timeline-phase">
+                        <h4>Fase 1: Mesos 1-3 (Q1 2027)</h4>
+                        <p><strong>Accions ràpides i de baix cost:</strong></p>
+                        <ul>
+                            <li>Auditoría de recursos i consumos</li>
+                            <li>Capacitació de personal</li>
+                            <li>Instal·lació de dispositius de baixa inversió</li>
+                            <li>Inici de digitalització</li>
+                        </ul>
+                    </div>
+
+                    <div class="timeline-phase">
+                        <h4>Fase 2: Mesos 4-12 (Q2-Q4 2027)</h4>
+                        <p><strong>Implementació de mitjana complexitat:</strong></p>
+                        <ul>
+                            <li>Instal·lació de sistemes automàtics</li>
+                            <li>Actualització de equipament</li>
+                            <li>Establiment de controls mensuals</li>
+                            <li>Campanyes de sensibilització</li>
+                        </ul>
+                    </div>
+
+                    <div class="timeline-phase">
+                        <h4>Fase 3: Anys 2-3 (2028-2029)</h4>
+                        <p><strong>Optimització i manteniment:</strong></p>
+                        <ul>
+                            <li>Millores contínues baseades en dades</li>
+                            <li>Certificacions de sostenibilitat</li>
+                            <li>Ampliació de les millores provades</li>
+                            <li>Evaluació d'impacte final</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="export-section full-width" style="margin-top: 40px;">
+                <button class="btn btn-primary" onclick="exportReductionPlan()">📥 Exportar Pla de Reducció</button>
+            </div>
+        </div>
+    `;
+
+    container.innerHTML = html;
+}
+
+function exportReductionPlan() {
+    const allData = getAllData();
+    const metrics = calculateAllMetrics(allData);
+
+    const html = `
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pla de Reducció de Consum</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #333; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
+        h1 { color: #2c3e50; margin-bottom: 10px; border-bottom: 3px solid #3498db; padding-bottom: 10px; }
+        h2 { color: #34495e; margin-top: 30px; margin-bottom: 20px; }
+        h3 { color: #7f8c8d; margin-top: 20px; margin-bottom: 15px; }
+        .section { background: #f9f9f9; padding: 20px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #3498db; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+        th, td { padding: 12px; text-align: left; border: 1px solid #bdc3c7; }
+        th { background-color: #3498db; color: white; }
+        tr:nth-child(even) { background-color: #ecf0f1; }
+        .objective { background: #d4edda; border-left: 4px solid #28a745; padding: 15px; margin-bottom: 15px; border-radius: 4px; }
+        .action-item { background: white; padding: 15px; border-left: 4px solid #f39c12; margin-bottom: 10px; border-radius: 4px; }
+        .metrics-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 15px; }
+        .metric-item { background: white; padding: 15px; border-radius: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .metric-label { font-size: 12px; color: #7f8c8d; text-transform: uppercase; margin-bottom: 5px; }
+        .metric-value { font-size: 24px; font-weight: bold; color: #2c3e50; }
+        .footer { margin-top: 50px; text-align: center; color: #95a5a6; font-size: 12px; border-top: 1px solid #bdc3c7; padding-top: 20px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌱 Pla de Reducció de Consum - 30% en 3 Anos</h1>
+        <p>Data de generació: ${new Date().toLocaleDateString('ca-ES')}</p>
+
+        <h2>📊 Situació Basal (2026)</h2>
+
+        <h3>⚡ Energía</h3>
+        <div class="section">
+            <div class="metrics-grid">
+                <div class="metric-item">
+                    <div class="metric-label">Consum Anual</div>
+                    <div class="metric-value">${formatNumber(metrics.energia.promedio * 365)} kWh</div>
+                </div>
+                <div class="metric-item">
+                    <div class="metric-label">Cost Estimat</div>
+                    <div class="metric-value">€${formatNumber(metrics.energia.promedio * 365 * 0.25)}</div>
+                </div>
+                <div class="metric-item">
+                    <div class="metric-label">CO₂ Emissions</div>
+                    <div class="metric-value">${formatNumber(metrics.energia.promedio * 365 * 0.294 / 1000)} T</div>
+                </div>
+                <div class="metric-item">
+                    <div class="metric-label">Objectiu 3 Anys</div>
+                    <div class="metric-value">-30%</div>
+                </div>
+            </div>
+        </div>
+
+        <h3>💧 Agua</h3>
+        <div class="section">
+            <div class="metrics-grid">
+                <div class="metric-item">
+                    <div class="metric-label">Consum Anual</div>
+                    <div class="metric-value">${formatNumber(metrics.agua.promedio * 365)} m³</div>
+                </div>
+                <div class="metric-item">
+                    <div class="metric-label">Cost Estimat</div>
+                    <div class="metric-value">€${formatNumber(metrics.agua.promedio * 365 * 2.50)}</div>
+                </div>
+                <div class="metric-item">
+                    <div class="metric-label">Litres/Dia</div>
+                    <div class="metric-value">${formatNumber(metrics.agua.promedio * 1000)} L</div>
+                </div>
+                <div class="metric-item">
+                    <div class="metric-label">Objectiu 3 Anys</div>
+                    <div class="metric-value">-30%</div>
+                </div>
+            </div>
+        </div>
+
+        <h2>🎯 Estratègies de Reducció</h2>
+
+        <h3>⚡ Energía Elèctrica</h3>
+        <div class="objective">
+            <strong>Objectiu Mesurable:</strong> Reduir el consum de kWh un 30% en 3 anys mitjançant eficiència energètica
+        </div>
+        <div class="section">
+            <p><strong>Accions Concretes:</strong></p>
+            <div class="action-item">
+                <strong>1. Instal·lació de LED eficients (Mes 1-3)</strong>
+                <p>Canviar tota la iluminació a LED. Impacte: 8% de reducció.</p>
+                <p>Cost: Alt | Indicador: kWh/mes</p>
+            </div>
+            <div class="action-item">
+                <strong>2. Sistema de control automàtic (Mes 4-6)</strong>
+                <p>Sensorsde presència i luz natural. Impacte: 7% de reducció.</p>
+                <p>Cost: Mitjà | Indicador: Hores de luz</p>
+            </div>
+            <div class="action-item">
+                <strong>3. Optimització HVAC (Mes 7-12)</strong>
+                <p>Manteniment preventiu i programació inteligent. Impacte: 10% de reducció.</p>
+                <p>Cost: Mitjà | Indicador: Temperatura controlada</p>
+            </div>
+            <div class="action-item">
+                <strong>4. Auditoría i Formació (Mes 1)</strong>
+                <p>Identificar consumos anòmals i concienciar. Impacte: 5% de reducció.</p>
+                <p>Cost: Baix | Indicador: Comportaments mejorats</p>
+            </div>
+        </div>
+
+        <h3>💧 Agua</h3>
+        <div class="objective">
+            <strong>Objectiu Mesurable:</strong> Reduir el consum d'água un 30% en 3 anys
+        </div>
+        <div class="section">
+            <p><strong>Accions Concretes:</strong></p>
+            <div class="action-item">
+                <strong>1. Grifos de bajo flujo (Mes 1-3)</strong>
+                <p>Aireadores que reducen 30-50% del consum. Impacte: 12%.</p>
+                <p>Cost: Baix | Indicador: Litres/dia</p>
+            </div>
+            <div class="action-item">
+                <strong>2. Reparació de fugues (Mes 1)</strong>
+                <p>Revision trimestral i reparació. Impacte: 8%.</p>
+                <p>Cost: Baix | Indicador: Fugues reparades</p>
+            </div>
+            <div class="action-item">
+                <strong>3. Riego inteligent (Mes 4-6)</strong>
+                <p>Sensor de humedad i riego automàtic. Impacte: 7%.</p>
+                <p>Cost: Mitjà | Indicador: Agua optimitzada</p>
+            </div>
+            <div class="action-item">
+                <strong>4. Reutilització d'aigues grises (Mes 13-24)</strong>
+                <p>Sistemes de reutilització. Impacte: 3%.</p>
+                <p>Cost: Alt | Indicador: Litres reutilitzats</p>
+            </div>
+        </div>
+
+        <h3>📄 Consumibles d'Oficina</h3>
+        <div class="objective">
+            <strong>Objectiu Mesurable:</strong> Reduir el cost i impacte dels consumibles un 30% en 3 anys
+        </div>
+        <div class="section">
+            <p><strong>Accions Concretes:</strong></p>
+            <div class="action-item">
+                <strong>1. Digitalització de processos (Mes 1-6)</strong>
+                <p>Transit a documents digitals. Impacte: 15%.</p>
+            </div>
+            <div class="action-item">
+                <strong>2. Paper reciclat (Mes 1)</strong>
+                <p>Uso exclusivo de papel certificat. Impacte: 8%.</p>
+            </div>
+            <div class="action-item">
+                <strong>3. Optimització d'inventaris (Mes 2-4)</strong>
+                <p>Control de existencies. Impacte: 5%.</p>
+            </div>
+            <div class="action-item">
+                <strong>4. Programes de reutilització (Mes 1)</strong>
+                <p>Recuperació de material. Impacte: 2%.</p>
+            </div>
+        </div>
+
+        <h3>🧹 Productes de Limpieza</h3>
+        <div class="objective">
+            <strong>Objectiu Mesurable:</strong> Reduir cost i impacte ambiental dels productes de neteja un 30% en 3 anys
+        </div>
+        <div class="section">
+            <p><strong>Acciones Concretes:</strong></p>
+            <div class="action-item">
+                <strong>1. Productes ecològics (Mes 1-3)</strong>
+                <p>Substitución per biodegradables. Impacte: 10%.</p>
+            </div>
+            <div class="action-item">
+                <strong>2. Microfiber i tècniques en sec (Mes 2-4)</strong>
+                <p>Reducció d'agua i químics. Impacte: 8%.</p>
+            </div>
+            <div class="action-item">
+                <strong>3. Formació de personal (Mes 1)</strong>
+                <p>Tècniques eficients. Impacte: 7%.</p>
+            </div>
+            <div class="action-item">
+                <strong>4. Compra a granel (Mes 3-6)</strong>
+                <p>Reducció d'envases. Impacte: 5%.</p>
+            </div>
+        </div>
+
+        <h2>🔄 Principis d'Economia Circular</h2>
+        <div class="section">
+            <ul style="margin-left: 20px;">
+                <li><strong>Reduir:</strong> Minimitzar recursos consumits des de l'origen</li>
+                <li><strong>Reutilitzar:</strong> Donar segona vida als productes</li>
+                <li><strong>Reciclar:</strong> Processar materials per crear nous productes</li>
+                <li><strong>Recuperar:</strong> Obtenir energia o materials de residus</li>
+            </ul>
+        </div>
+
+        <h2>📅 Cronograma</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Periode</th>
+                    <th>Accions Principals</th>
+                    <th>Resultat Esperat</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Fase 1 (Q1 2027)</strong></td>
+                    <td>Auditoría, Capacitació, Dispositius de baix cost</td>
+                    <td>10% de reducció inicial</td>
+                </tr>
+                <tr>
+                    <td><strong>Fase 2 (Q2-Q4 2027)</strong></td>
+                    <td>Sistemes automàtics, Equipament, Controls</td>
+                    <td>20% de reducció acumulada</td>
+                </tr>
+                <tr>
+                    <td><strong>Fase 3 (2028-2029)</strong></td>
+                    <td>Millores contínues, Certificacions, Avaluació</td>
+                    <td>30% de reducció acumulada</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>💰 Estimació d'Estalvis</h2>
+        <div class="section">
+            <div class="metrics-grid">
+                <div class="metric-item">
+                    <div class="metric-label">Estalvi Anual (Any 3)</div>
+                    <div class="metric-value">30% reducció</div>
+                </div>
+                <div class="metric-item">
+                    <div class="metric-label">Inversion Inicial</div>
+                    <div class="metric-value">Mitjana-Alta</div>
+                </div>
+                <div class="metric-item">
+                    <div class="metric-label">ROI Estimat</div>
+                    <div class="metric-value">2-3 anys</div>
+                </div>
+                <div class="metric-item">
+                    <div class="metric-label">Impacte CO₂</div>
+                    <div class="metric-value">Reducció 30%</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>&copy; 2026 Calculadora d'Estalvi Energètic - Pla Sostenibilitat</p>
+        </div>
+    </div>
+</body>
+</html>
+    `;
+
+    const blob = new Blob([html], { type: 'text/html' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `pla-reducció-${new Date().toISOString().split('T')[0]}.html`;
+    document.body.appendChild(a);
+    a.click();
+    window.URL.revokeObjectURL(url);
+    document.body.removeChild(a);
+
+    alert('Pla de reducció exportat correctament!');
+}
+
+// ===== EXPORTAR A HTML (ORIGINAL) =====
 function exportToHTML() {
     const allData = getAllData();
     const metrics = calculateAllMetrics(allData);
