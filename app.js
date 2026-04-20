@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 // ===== CARGAR DATOS =====
 async function initializeData() {
     try {
-        const response = await fetch('./sample-data.json');
+        const response = await fetch('./dataclean.json');
         const data = await response.json();
         parseOriginalData(data);
         loadCustomDataFromStorage();
