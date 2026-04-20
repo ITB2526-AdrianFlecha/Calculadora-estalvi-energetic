@@ -24,36 +24,44 @@ const REDUCTION_STRATEGIES = {
         reduction: 0.30,
         actions: [
             {
+                id: 'energia_1',
                 title: 'Instalación de LED eficientes',
                 description: 'Cambiar toda la iluminación a LED reduce 40% del consumo de iluminación',
                 impact: 0.08,
                 timeline: 'Mes 1-3',
                 cost: 'Alto',
-                measurable: 'kWh reducidos por mes'
+                measurable: 'kWh reducidos por mes',
+                enabled: false
             },
             {
+                id: 'energia_2',
                 title: 'Sistema de control automático de luz',
                 description: 'Sensores de presencia y luz natural reducen consumo innecesario',
                 impact: 0.07,
                 timeline: 'Mes 4-6',
                 cost: 'Medio',
-                measurable: 'Horas de luz reducidas'
+                measurable: 'Horas de luz reducidas',
+                enabled: false
             },
             {
+                id: 'energia_3',
                 title: 'Optimización de equipos HVAC',
                 description: 'Mantenimiento preventivo y programación inteligente',
                 impact: 0.10,
                 timeline: 'Mes 7-12',
                 cost: 'Medio',
-                measurable: 'Temperatura controlada automáticamente'
+                measurable: 'Temperatura controlada automáticamente',
+                enabled: false
             },
             {
+                id: 'energia_4',
                 title: 'Auditoría energética y formación',
                 description: 'Identificar consumos anómalos y concienciar al personal',
                 impact: 0.05,
                 timeline: 'Mes 1',
                 cost: 'Bajo',
-                measurable: 'Comportamientos de consumo mejorados'
+                measurable: 'Comportamientos de consumo mejorados',
+                enabled: false
             }
         ]
     },
@@ -64,36 +72,44 @@ const REDUCTION_STRATEGIES = {
         reduction: 0.30,
         actions: [
             {
+                id: 'agua_1',
                 title: 'Instalación de grifos de bajo flujo',
                 description: 'Grifos y duchas con aireadores que reducen 30-50% del consumo',
                 impact: 0.12,
                 timeline: 'Mes 1-3',
                 cost: 'Bajo',
-                measurable: 'Litros/día reducidos'
+                measurable: 'Litros/día reducidos',
+                enabled: false
             },
             {
+                id: 'agua_2',
                 title: 'Reparación de fugas',
                 description: 'Una fuga pequeña puede perder 200L/día. Revisión trimestral',
                 impact: 0.08,
                 timeline: 'Mes 1',
                 cost: 'Bajo',
-                measurable: 'Fugas reparadas'
+                measurable: 'Fugas reparadas',
+                enabled: false
             },
             {
+                id: 'agua_3',
                 title: 'Sistema de riego inteligente',
                 description: 'Sensor de humedad y riego automático según necesidad',
                 impact: 0.07,
                 timeline: 'Mes 4-6',
                 cost: 'Medio',
-                measurable: 'Agua de riego optimizada'
+                measurable: 'Agua de riego optimizada',
+                enabled: false
             },
             {
+                id: 'agua_4',
                 title: 'Reutilización de aguas grises',
                 description: 'Sistemas para reutilizar agua de lluvia y aires acondicionados',
                 impact: 0.03,
                 timeline: 'Mes 13-24',
                 cost: 'Alto',
-                measurable: 'Litros reutilizados/mes'
+                measurable: 'Litros reutilizados/mes',
+                enabled: false
             }
         ]
     },
@@ -104,36 +120,44 @@ const REDUCTION_STRATEGIES = {
         reduction: 0.30,
         actions: [
             {
+                id: 'consumibles_1',
                 title: 'Digitalización de procesos',
                 description: 'Transitar a documentos digitales reduce papel en 80%',
                 impact: 0.15,
                 timeline: 'Mes 1-6',
                 cost: 'Medio',
-                measurable: 'Hojas de papel/mes'
+                measurable: 'Hojas de papel/mes',
+                enabled: false
             },
             {
+                id: 'consumibles_2',
                 title: 'Compra de papel reciclado',
                 description: 'Uso exclusivo de papel con certificación ambiental',
                 impact: 0.08,
                 timeline: 'Mes 1',
                 cost: 'Bajo',
-                measurable: 'Papel reciclado %'
+                measurable: 'Papel reciclado %',
+                enabled: false
             },
             {
+                id: 'consumibles_3',
                 title: 'Optimización de inventarios',
                 description: 'Sistema de control de existencias para evitar compras excesivas',
                 impact: 0.05,
                 timeline: 'Mes 2-4',
                 cost: 'Bajo',
-                measurable: 'Compras reducidas %'
+                measurable: 'Compras reducidas %',
+                enabled: false
             },
             {
+                id: 'consumibles_4',
                 title: 'Programas de reutilización',
                 description: 'Recuperar y reutilizar cartuchos, carpetas, sobres',
                 impact: 0.02,
                 timeline: 'Mes 1',
                 cost: 'Bajo',
-                measurable: 'Items reutilizados'
+                measurable: 'Items reutilizados',
+                enabled: false
             }
         ]
     },
@@ -144,36 +168,44 @@ const REDUCTION_STRATEGIES = {
         reduction: 0.30,
         actions: [
             {
+                id: 'limpieza_1',
                 title: 'Productos de limpieza ecológicos',
                 description: 'Sustituir por productos biodegradables y concentrados',
                 impact: 0.10,
                 timeline: 'Mes 1-3',
                 cost: 'Bajo',
-                measurable: 'Productos tóxicos eliminados'
+                measurable: 'Productos tóxicos eliminados',
+                enabled: false
             },
             {
+                id: 'limpieza_2',
                 title: 'Microfiber y técnicas de limpieza en seco',
                 description: 'Trapos de microfibra reducen uso de agua y químicos',
                 impact: 0.08,
                 timeline: 'Mes 2-4',
                 cost: 'Bajo',
-                measurable: 'Agua de limpieza reducida'
+                measurable: 'Agua de limpieza reducida',
+                enabled: false
             },
             {
+                id: 'limpieza_3',
                 title: 'Formación de personal de limpieza',
                 description: 'Técnicas eficientes y dosificación correcta de productos',
                 impact: 0.07,
                 timeline: 'Mes 1',
                 cost: 'Bajo',
-                measurable: 'Eficiencia mejorada'
+                measurable: 'Eficiencia mejorada',
+                enabled: false
             },
             {
+                id: 'limpieza_4',
                 title: 'Compra a granel y dosificadores',
                 description: 'Reducir envases y usar sistemas de dosificación automática',
                 impact: 0.05,
                 timeline: 'Mes 3-6',
                 cost: 'Medio',
-                measurable: 'Envases reducidos %'
+                measurable: 'Envases reducidos %',
+                enabled: false
             }
         ]
     }
@@ -187,6 +219,12 @@ let globalData = {
 
 let allCharts = {};
 let baselineMetrics = null;
+let selectedActions = {
+    energia: [],
+    agua: [],
+    consumibles: [],
+    limpieza: []
+};
 
 // ===== INICIALIZACIÓN =====
 document.addEventListener('DOMContentLoaded', async () => {
@@ -202,6 +240,7 @@ async function initializeData() {
         const data = await response.json();
         parseOriginalData(data);
         baselineMetrics = calculateAllMetrics(getAllData());
+        loadSelectedActionsFromStorage();
     } catch (error) {
         console.error('Error al cargar datos:', error);
     }
@@ -256,6 +295,21 @@ function parseOriginalData(data) {
             });
         });
     }
+}
+
+function loadSelectedActionsFromStorage() {
+    const stored = localStorage.getItem('calculadora_selected_actions');
+    if (stored) {
+        try {
+            selectedActions = JSON.parse(stored);
+        } catch (error) {
+            console.error('Error al cargar acciones seleccionadas:', error);
+        }
+    }
+}
+
+function saveSelectedActionsToStorage() {
+    localStorage.setItem('calculadora_selected_actions', JSON.stringify(selectedActions));
 }
 
 // ===== FUNCIONES UTILITARIAS =====
@@ -441,38 +495,40 @@ function getProjectionValues(yearValue) {
 }
 
 function calculateReductionProjections(metrics) {
-    const reductionPerYear = 0.30 / 3; // 10% por año
+    const projections = {};
 
-    return {
-        energia: {
-            baseline: metrics.energia.promedio * 365,
-            year1: (metrics.energia.promedio * 365) * (1 - reductionPerYear) * (1 + INFLATION_RATE),
-            year2: (metrics.energia.promedio * 365) * (1 - reductionPerYear * 2) * Math.pow(1 + INFLATION_RATE, 2),
-            year3: (metrics.energia.promedio * 365) * (1 - reductionPerYear * 3) * Math.pow(1 + INFLATION_RATE, 3),
-            unit: 'kWh'
-        },
-        agua: {
-            baseline: metrics.agua.promedio * 365,
-            year1: (metrics.agua.promedio * 365) * (1 - reductionPerYear) * (1 + INFLATION_RATE),
-            year2: (metrics.agua.promedio * 365) * (1 - reductionPerYear * 2) * Math.pow(1 + INFLATION_RATE, 2),
-            year3: (metrics.agua.promedio * 365) * (1 - reductionPerYear * 3) * Math.pow(1 + INFLATION_RATE, 3),
-            unit: 'm³'
-        },
-        consumibles: {
-            baseline: metrics.consumibles.promedio * 12,
-            year1: (metrics.consumibles.promedio * 12) * (1 - reductionPerYear) * (1 + INFLATION_RATE),
-            year2: (metrics.consumibles.promedio * 12) * (1 - reductionPerYear * 2) * Math.pow(1 + INFLATION_RATE, 2),
-            year3: (metrics.consumibles.promedio * 12) * (1 - reductionPerYear * 3) * Math.pow(1 + INFLATION_RATE, 3),
-            unit: '€'
-        },
-        limpieza: {
-            baseline: metrics.limpieza.promedio * 12,
-            year1: (metrics.limpieza.promedio * 12) * (1 - reductionPerYear) * (1 + INFLATION_RATE),
-            year2: (metrics.limpieza.promedio * 12) * (1 - reductionPerYear * 2) * Math.pow(1 + INFLATION_RATE, 2),
-            year3: (metrics.limpieza.promedio * 12) * (1 - reductionPerYear * 3) * Math.pow(1 + INFLATION_RATE, 3),
-            unit: '€'
-        }
-    };
+    Object.keys(REDUCTION_STRATEGIES).forEach(metricType => {
+        const strategy = REDUCTION_STRATEGIES[metricType];
+        const metric = metrics[metricType];
+
+        // Calcular impacto total de acciones seleccionadas
+        let totalImpact = 0;
+        const enabledActions = selectedActions[metricType] || [];
+
+        strategy.actions.forEach(action => {
+            if (enabledActions.includes(action.id)) {
+                totalImpact += action.impact;
+            }
+        });
+
+        // Limitar el impacto máximo al 30%
+        const reductionPerYear = Math.min(totalImpact / 3, 0.10); // Max 10% por año
+
+        const yearValue = metricType === 'consumibles' || metricType === 'limpieza'
+            ? metric.promedio * 12
+            : metric.promedio * 365;
+
+        projections[metricType] = {
+            baseline: yearValue,
+            totalImpactSelected: totalImpact,
+            year1: yearValue * (1 - reductionPerYear) * (1 + INFLATION_RATE),
+            year2: yearValue * (1 - reductionPerYear * 2) * Math.pow(1 + INFLATION_RATE, 2),
+            year3: yearValue * (1 - reductionPerYear * 3) * Math.pow(1 + INFLATION_RATE, 3),
+            unit: strategy.unit
+        };
+    });
+
+    return projections;
 }
 
 function calculateSpecialPeriodsMetrics(allData) {
@@ -1280,7 +1336,7 @@ function renderReductionCalculator() {
         <div class="reduction-container">
             <div class="reduction-header">
                 <h2>🌱 Calculadora de Reducció del 30% en 3 Anys</h2>
-                <p>Visualitza com es reduirien els gastos aplicant les estratègies proposades</p>
+                <p>Selecciona les accions que vols implementar per veure l'impacte en els gastos</p>
             </div>
 
             <div class="reduction-content">
@@ -1289,12 +1345,15 @@ function renderReductionCalculator() {
     Object.keys(REDUCTION_STRATEGIES).forEach(metricType => {
         const strategy = REDUCTION_STRATEGIES[metricType];
         const projection = reductionProjections[metricType];
+        const enabledActions = selectedActions[metricType] || [];
 
         html += `
             <div class="strategy-card">
                 <div class="strategy-card-header">
                     <h3>${strategy.icon} ${strategy.name}</h3>
-                    <span class="reduction-badge">30% Reducció en 3 anys</span>
+                    <span class="reduction-badge">
+                        ${enabledActions.length > 0 ? `${(projection.totalImpactSelected * 100).toFixed(1)}% Reducció` : 'Cap acció'}
+                    </span>
                 </div>
 
                 <div class="projection-metrics">
@@ -1327,22 +1386,28 @@ function renderReductionCalculator() {
                 </div>
 
                 <div class="actions-list">
-                    <h4>Acciones Propuestas:</h4>
+                    <h4>🎯 Acciones Disponibles:</h4>
         `;
 
         strategy.actions.forEach((action, idx) => {
+            const isEnabled = enabledActions.includes(action.id);
             html += `
-                <div class="action-item">
-                    <span class="action-number">${idx + 1}</span>
-                    <div class="action-details-box">
-                        <strong>${action.title}</strong>
-                        <p>${action.description}</p>
-                        <div class="action-meta">
-                            <span class="meta-item">Impacte: ${(action.impact * 100).toFixed(1)}%</span>
-                            <span class="meta-item">Timeline: ${action.timeline}</span>
-                            <span class="meta-item cost-${action.cost.toLowerCase()}">Cost: ${action.cost}</span>
+                <div class="action-item ${isEnabled ? 'enabled' : ''}">
+                    <input type="checkbox"
+                        id="${action.id}"
+                        ${isEnabled ? 'checked' : ''}
+                        onchange="toggleAction('${metricType}', '${action.id}')">
+                    <label for="${action.id}">
+                        <div class="action-details-box">
+                            <strong>${action.title}</strong>
+                            <p>${action.description}</p>
+                            <div class="action-meta">
+                                <span class="meta-item">Impacte: ${(action.impact * 100).toFixed(1)}%</span>
+                                <span class="meta-item">Timeline: ${action.timeline}</span>
+                                <span class="meta-item cost-${action.cost.toLowerCase()}">Cost: ${action.cost}</span>
+                            </div>
                         </div>
-                    </div>
+                    </label>
                 </div>
             `;
         });
@@ -1373,6 +1438,23 @@ function renderReductionCalculator() {
     `;
 
     container.innerHTML = html;
+}
+
+// ===== TOGGLE ACCIONES =====
+function toggleAction(metricType, actionId) {
+    if (!selectedActions[metricType]) {
+        selectedActions[metricType] = [];
+    }
+
+    const index = selectedActions[metricType].indexOf(actionId);
+    if (index > -1) {
+        selectedActions[metricType].splice(index, 1);
+    } else {
+        selectedActions[metricType].push(actionId);
+    }
+
+    saveSelectedActionsToStorage();
+    renderReductionCalculator();
 }
 
 // ===== EXPORTAR =====
@@ -1578,7 +1660,7 @@ function exportReductionCalculator() {
         <h1>🌱 Calculadora de Reducció del 30% en 3 Anys</h1>
         <p>Data de generació: ${new Date().toLocaleDateString('ca-ES')}</p>
 
-        <h2>📊 Proyecciones con Reducción</h2>
+        <h2>📊 Proyecciones con Acciones Seleccionadas</h2>
 
         <h3>⚡ Energía</h3>
         <div class="section">

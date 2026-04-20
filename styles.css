@@ -1360,3 +1360,128 @@ button, a {
         align-self: flex-start;
     }
 }
+
+/* ===== REDUCTION CALCULATOR CHECKBOX STYLES ===== */
+.action-item {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 12px;
+    padding: 12px;
+    background: white;
+    border-radius: 6px;
+    border-left: 3px solid #bdc3c7;
+    border: 2px solid #ecf0f1;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.action-item input[type="checkbox"] {
+    margin-top: 2px;
+    cursor: pointer;
+    width: 18px;
+    height: 18px;
+    min-width: 18px;
+    accent-color: var(--primary-color);
+}
+
+.action-item label {
+    flex: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.action-item.enabled {
+    background: #f0f7ff;
+    border: 2px solid var(--primary-color);
+    border-left: 3px solid var(--primary-color);
+}
+
+.action-item:hover {
+    background: #f9f9f9;
+    border-color: var(--primary-color);
+}
+
+.action-item.enabled:hover {
+    background: #e8f2ff;
+}
+
+.action-details-box {
+    flex: 1;
+    font-size: 12px;
+}
+
+.action-details-box strong {
+    display: block;
+    color: var(--dark-color);
+    margin-bottom: 4px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.action-details-box p {
+    color: #555;
+    margin-bottom: 8px;
+    line-height: 1.4;
+}
+
+.action-meta {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.meta-item {
+    background: #ecf0f1;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 10px;
+    color: #555;
+    white-space: nowrap;
+}
+
+.meta-item.cost-bajo {
+    background: #d4edda;
+    color: #155724;
+}
+
+.meta-item.cost-medio {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.meta-item.cost-alto {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.economy-circular {
+    background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+    padding: 15px;
+    border-radius: 8px;
+    border-left: 4px solid var(--secondary-color);
+}
+
+.economy-circular h4 {
+    color: #155724;
+    margin-bottom: 10px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.economy-circular ul {
+    list-style: none;
+    padding: 0;
+}
+
+.economy-circular li {
+    padding: 6px 0;
+    color: #155724;
+    font-size: 12px;
+    border-bottom: 1px solid rgba(21, 87, 36, 0.2);
+}
+
+.economy-circular li:last-child {
+    border-bottom: none;
+}
