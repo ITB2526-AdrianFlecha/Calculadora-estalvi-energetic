@@ -1548,3 +1548,222 @@ button, a {
     display: block;
     margin-top: 3px;
 }
+
+/* ===== DASHBOARD UPDATES ===== */
+.dashboard-total {
+    background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+    color: white;
+    padding: 30px;
+    border-radius: 12px;
+    margin-bottom: 30px;
+    text-align: center;
+    box-shadow: var(--shadow-lg);
+}
+
+.dashboard-total h3 {
+    color: white;
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+
+.total-cost {
+    font-size: 48px;
+    font-weight: 700;
+    margin: 0;
+}
+
+.charts-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 25px;
+}
+
+.chart-section.full-width {
+    width: 100%;
+}
+
+/* ===== REDUCTION CALCULATOR MENU ===== */
+.reduction-menu {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.menu-btn {
+    padding: 15px;
+    border: 2px solid #ecf0f1;
+    background: white;
+    color: #7f8c8d;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.menu-btn:hover {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+.menu-btn.active {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+/* ===== REDUCTION CONTENT LAYOUT ===== */
+.reduction-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    margin-top: 30px;
+}
+
+.reduction-left, .reduction-right {
+    background: white;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: var(--shadow);
+}
+
+.reduction-left h3, .reduction-right h3 {
+    color: var(--dark-color);
+    margin-bottom: 20px;
+    font-size: 18px;
+}
+
+.reduction-values {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.value-card {
+    background: #f9f9f9;
+    padding: 15px;
+    border-radius: 8px;
+    border-left: 4px solid var(--primary-color);
+}
+
+.value-card.baseline {
+    border-left-color: #bdc3c7;
+    background: #ecf0f1;
+}
+
+.value-card .label {
+    display: block;
+    font-size: 12px;
+    color: #7f8c8d;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.value-card .value {
+    display: block;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--dark-color);
+}
+
+.chart-wrapper {
+    margin-bottom: 20px;
+    max-height: 400px;
+}
+
+/* ===== RESPONSIVE REDUCTION ===== */
+@media (max-width: 1024px) {
+    .reduction-content {
+        grid-template-columns: 1fr;
+    }
+
+    .reduction-menu {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .reduction-menu {
+        grid-template-columns: 1fr;
+    }
+
+    .menu-btn {
+        padding: 12px;
+        font-size: 13px;
+    }
+
+    .reduction-values {
+        grid-template-columns: 1fr;
+    }
+}
+/* ===== ANALYSIS SPACER ===== */
+.analysis-spacer {
+    height: 30px;
+}
+
+/* ===== PERIODS INFO ===== */
+.periods-info {
+    font-size: 12px;
+    color: #7f8c8d;
+    font-style: italic;
+    margin-top: -10px;
+    margin-bottom: 15px;
+}
+
+/* ===== DASHBOARD RESPONSIVE ===== */
+@media (max-width: 768px) {
+    .kpi-cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .dashboard-total {
+        padding: 20px;
+    }
+
+    .total-cost {
+        font-size: 36px;
+    }
+}
+
+@media (max-width: 480px) {
+    .kpi-cards {
+        grid-template-columns: 1fr;
+    }
+}
+/* ===== SPECIAL PERIODS CONTAINER ===== */
+.special-periods-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
+    margin-top: 30px;
+}
+
+.chart-section.half-width {
+    width: 100%;
+}
+
+/* ===== RESPONSIVE SPECIAL PERIODS ===== */
+@media (max-width: 1024px) {
+    .special-periods-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ===== COST TRANSLATIONS ===== */
+.meta-item.cost-baix {
+    background: #d4edda;
+    color: #155724;
+}
+
+.meta-item.cost-mitjà {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.meta-item.cost-alt {
+    background: #f8d7da;
+    color: #721c24;
+}
