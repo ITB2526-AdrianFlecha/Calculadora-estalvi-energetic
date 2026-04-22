@@ -35,12 +35,12 @@ const REDUCTION_STRATEGIES = {
             },
             {
                 id: 'energia_2',
-                title: 'Sistema de control automático de luz',
-                description: 'Sensores de presencia y luz natural reducen consumo innecesario',
+                title: 'Uso de baterías en horas punta',
+                description: 'Almacenamiento de energía para usar en horas punta reduce consumo de red',
                 impact: 0.07,
                 timeline: 'Mes 4-6',
-                cost: 'Medio',
-                measurable: 'Horas de luz reducidas',
+                cost: 'Alto',
+                measurable: 'kWh ahorrados en horas punta',
                 enabled: false
             },
             {
@@ -521,6 +521,9 @@ function calculateReductionProjections(metrics) {
         projections[metricType] = {
             baseline: yearValue,
             totalImpactSelected: totalImpact,
+            reductionPercentageYear1: Math.min(totalImpact, 0.30) * (1/3),
+            reductionPercentageYear2: Math.min(totalImpact, 0.30) * (2/3),
+            reductionPercentageYear3: Math.min(totalImpact, 0.30),
             year1: yearValue * (1 - reductionPerYear) * (1 + INFLATION_RATE),
             year2: yearValue * (1 - reductionPerYear * 2) * Math.pow(1 + INFLATION_RATE, 2),
             year3: yearValue * (1 - reductionPerYear * 3) * Math.pow(1 + INFLATION_RATE, 3),
@@ -1352,7 +1355,9 @@ function renderReductionCalculator() {
                 <div class="strategy-card-header">
                     <h3>${strategy.icon} ${strategy.name}</h3>
                     <span class="reduction-badge">
-                        ${enabledActions.length > 0 ? `${(projection.totalImpactSelected * 100).toFixed(1)}% Reducció` : 'Cap acció'}
+                        ${enabledActions.length > 0
+                            ? `${(projection.totalImpactSelected * 100).toFixed(1)}% Reducció`
+                            : '100% Baseline'}
                     </span>
                 </div>
 
@@ -1366,22 +1371,22 @@ function renderReductionCalculator() {
                     <div class="metric-projection">
                         <div class="metric-label">Año 1 (2027)</div>
                         <div class="metric-value">${formatNumber(projection.year1)} ${projection.unit}</div>
-                        <div class="metric-bar year1" style="width: ${(projection.year1 / projection.baseline) * 100}%"></div>
-                        <div class="metric-reduction">-${(((projection.baseline - projection.year1) / projection.baseline) * 100).toFixed(1)}%</div>
+                        <div class="metric-bar year1"></div>
+                        <div class="metric-reduction">${enabledActions.length > 0 ? `-${(projection.reductionPercentageYear1 * 100).toFixed(1)}%` : '100%'}</div>
                     </div>
 
                     <div class="metric-projection">
                         <div class="metric-label">Año 2 (2028)</div>
                         <div class="metric-value">${formatNumber(projection.year2)} ${projection.unit}</div>
-                        <div class="metric-bar year2" style="width: ${(projection.year2 / projection.baseline) * 100}%"></div>
-                        <div class="metric-reduction">-${(((projection.baseline - projection.year2) / projection.baseline) * 100).toFixed(1)}%</div>
+                        <div class="metric-bar year2"></div>
+                        <div class="metric-reduction">${enabledActions.length > 0 ? `-${(projection.reductionPercentageYear2 * 100).toFixed(1)}%` : '100%'}</div>
                     </div>
 
                     <div class="metric-projection">
                         <div class="metric-label">Año 3 (2029)</div>
                         <div class="metric-value">${formatNumber(projection.year3)} ${projection.unit}</div>
-                        <div class="metric-bar year3" style="width: ${(projection.year3 / projection.baseline) * 100}%"></div>
-                        <div class="metric-reduction">-${(((projection.baseline - projection.year3) / projection.baseline) * 100).toFixed(1)}%</div>
+                        <div class="metric-bar year3"></div>
+                        <div class="metric-reduction">${enabledActions.length > 0 ? `-${(projection.reductionPercentageYear3 * 100).toFixed(1)}%` : '100%'}</div>
                     </div>
                 </div>
 
@@ -1670,9 +1675,9 @@ function exportReductionCalculator() {
                 </thead>
                 <tbody>
                     <tr><td>Baseline 2026</td><td>${formatNumber(reductionProjections.energia.baseline)}</td><td>-</td></tr>
-                    <tr><td>Año 1 (2027)</td><td>${formatNumber(reductionProjections.energia.year1)}</td><td>-${(((reductionProjections.energia.baseline - reductionProjections.energia.year1) / reductionProjections.energia.baseline) * 100).toFixed(1)}%</td></tr>
-                    <tr><td>Año 2 (2028)</td><td>${formatNumber(reductionProjections.energia.year2)}</td><td>-${(((reductionProjections.energia.baseline - reductionProjections.energia.year2) / reductionProjections.energia.baseline) * 100).toFixed(1)}%</td></tr>
-                    <tr><td>Año 3 (2029)</td><td>${formatNumber(reductionProjections.energia.year3)}</td><td>-${(((reductionProjections.energia.baseline - reductionProjections.energia.year3) / reductionProjections.energia.baseline) * 100).toFixed(1)}%</td></tr>
+                    <tr><td>Año 1 (2027)</td><td>${formatNumber(reductionProjections.energia.year1)}</td><td>${(reductionProjections.energia.reductionPercentageYear1 * 100).toFixed(1)}%</td></tr>
+                    <tr><td>Año 2 (2028)</td><td>${formatNumber(reductionProjections.energia.year2)}</td><td>${(reductionProjections.energia.reductionPercentageYear2 * 100).toFixed(1)}%</td></tr>
+                    <tr><td>Año 3 (2029)</td><td>${formatNumber(reductionProjections.energia.year3)}</td><td>${(reductionProjections.energia.reductionPercentageYear3 * 100).toFixed(1)}%</td></tr>
                 </tbody>
             </table>
         </div>
@@ -1685,9 +1690,9 @@ function exportReductionCalculator() {
                 </thead>
                 <tbody>
                     <tr><td>Baseline 2026</td><td>${formatNumber(reductionProjections.agua.baseline)}</td><td>-</td></tr>
-                    <tr><td>Año 1 (2027)</td><td>${formatNumber(reductionProjections.agua.year1)}</td><td>-${(((reductionProjections.agua.baseline - reductionProjections.agua.year1) / reductionProjections.agua.baseline) * 100).toFixed(1)}%</td></tr>
-                    <tr><td>Año 2 (2028)</td><td>${formatNumber(reductionProjections.agua.year2)}</td><td>-${(((reductionProjections.agua.baseline - reductionProjections.agua.year2) / reductionProjections.agua.baseline) * 100).toFixed(1)}%</td></tr>
-                    <tr><td>Año 3 (2029)</td><td>${formatNumber(reductionProjections.agua.year3)}</td><td>-${(((reductionProjections.agua.baseline - reductionProjections.agua.year3) / reductionProjections.agua.baseline) * 100).toFixed(1)}%</td></tr>
+                    <tr><td>Año 1 (2027)</td><td>${formatNumber(reductionProjections.agua.year1)}</td><td>${(reductionProjections.agua.reductionPercentageYear1 * 100).toFixed(1)}%</td></tr>
+                    <tr><td>Año 2 (2028)</td><td>${formatNumber(reductionProjections.agua.year2)}</td><td>${(reductionProjections.agua.reductionPercentageYear2 * 100).toFixed(1)}%</td></tr>
+                    <tr><td>Año 3 (2029)</td><td>${formatNumber(reductionProjections.agua.year3)}</td><td>${(reductionProjections.agua.reductionPercentageYear3 * 100).toFixed(1)}%</td></tr>
                 </tbody>
             </table>
         </div>
@@ -1700,9 +1705,9 @@ function exportReductionCalculator() {
                 </thead>
                 <tbody>
                     <tr><td>Baseline 2026</td><td>${formatNumber(reductionProjections.consumibles.baseline)}</td><td>-</td></tr>
-                    <tr><td>Año 1 (2027)</td><td>${formatNumber(reductionProjections.consumibles.year1)}</td><td>-${(((reductionProjections.consumibles.baseline - reductionProjections.consumibles.year1) / reductionProjections.consumibles.baseline) * 100).toFixed(1)}%</td></tr>
-                    <tr><td>Año 2 (2028)</td><td>${formatNumber(reductionProjections.consumibles.year2)}</td><td>-${(((reductionProjections.consumibles.baseline - reductionProjections.consumibles.year2) / reductionProjections.consumibles.baseline) * 100).toFixed(1)}%</td></tr>
-                    <tr><td>Año 3 (2029)</td><td>${formatNumber(reductionProjections.consumibles.year3)}</td><td>-${(((reductionProjections.consumibles.baseline - reductionProjections.consumibles.year3) / reductionProjections.consumibles.baseline) * 100).toFixed(1)}%</td></tr>
+                    <tr><td>Año 1 (2027)</td><td>${formatNumber(reductionProjections.consumibles.year1)}</td><td>${(reductionProjections.consumibles.reductionPercentageYear1 * 100).toFixed(1)}%</td></tr>
+                    <tr><td>Año 2 (2028)</td><td>${formatNumber(reductionProjections.consumibles.year2)}</td><td>${(reductionProjections.consumibles.reductionPercentageYear2 * 100).toFixed(1)}%</td></tr>
+                    <tr><td>Año 3 (2029)</td><td>${formatNumber(reductionProjections.consumibles.year3)}</td><td>${(reductionProjections.consumibles.reductionPercentageYear3 * 100).toFixed(1)}%</td></tr>
                 </tbody>
             </table>
         </div>
@@ -1715,9 +1720,9 @@ function exportReductionCalculator() {
                 </thead>
                 <tbody>
                     <tr><td>Baseline 2026</td><td>${formatNumber(reductionProjections.limpieza.baseline)}</td><td>-</td></tr>
-                    <tr><td>Año 1 (2027)</td><td>${formatNumber(reductionProjections.limpieza.year1)}</td><td>-${(((reductionProjections.limpieza.baseline - reductionProjections.limpieza.year1) / reductionProjections.limpieza.baseline) * 100).toFixed(1)}%</td></tr>
-                    <tr><td>Año 2 (2028)</td><td>${formatNumber(reductionProjections.limpieza.year2)}</td><td>-${(((reductionProjections.limpieza.baseline - reductionProjections.limpieza.year2) / reductionProjections.limpieza.baseline) * 100).toFixed(1)}%</td></tr>
-                    <tr><td>Año 3 (2029)</td><td>${formatNumber(reductionProjections.limpieza.year3)}</td><td>-${(((reductionProjections.limpieza.baseline - reductionProjections.limpieza.year3) / reductionProjections.limpieza.baseline) * 100).toFixed(1)}%</td></tr>
+                    <tr><td>Año 1 (2027)</td><td>${formatNumber(reductionProjections.limpieza.year1)}</td><td>${(reductionProjections.limpieza.reductionPercentageYear1 * 100).toFixed(1)}%</td></tr>
+                    <tr><td>Año 2 (2028)</td><td>${formatNumber(reductionProjections.limpieza.year2)}</td><td>${(reductionProjections.limpieza.reductionPercentageYear2 * 100).toFixed(1)}%</td></tr>
+                    <tr><td>Año 3 (2029)</td><td>${formatNumber(reductionProjections.limpieza.year3)}</td><td>${(reductionProjections.limpieza.reductionPercentageYear3 * 100).toFixed(1)}%</td></tr>
                 </tbody>
             </table>
         </div>
