@@ -1,72 +1,9 @@
-// ===== CONSTANTES Y CONFIGURACIÓN - TARIFAS AIGÜES DE BARCELONA =====
+// ===== CONSTANTES Y CONFIGURACIÓN =====
 const INFLATION_RATE = 0.03;
 const CLOUD_DAILY_CONSUMPTION = 150; // kWh diarios de consumo de nube
 const CLOUD_WATER_DAILY_CONSUMPTION = 800; // Litros diarios para refrigeración de nube
-
-// ELECTRICITY PRICES - Barcelona 2025
 const ELECTRICITY_PRICE = 0.25; // €/kWh en Barcelona
-
-// WATER PRICES - Aigües de Barcelona - Tarifa no doméstica (2024-2025)
-// Consumo estimado: 2.200 m³/año (industrial/comercial)
-
-// TARIFFS VIGENTES AIGÜES DE BARCELONA
-const WATER_TARIFFS = {
-    // Suministro y alcantarillado - Tarifa no doméstica
-    supplyBasic: {
-        name: 'Canó de l\'Aigua - Tram 1',
-        range: '0-500 m³',
-        pricePerM3: 1.45,
-        description: 'Primer tram de consumo'
-    },
-    supplyMedium: {
-        name: 'Canó de l\'Aigua - Tram 2',
-        range: '501-1.500 m³',
-        pricePerM3: 1.85,
-        description: 'Segundo tram de consumo'
-    },
-    supplyHigh: {
-        name: 'Canó de l\'Aigua - Tram 3',
-        range: '>1.500 m³',
-        pricePerM3: 2.15,
-        description: 'Tercer tram de consumo'
-    },
-
-    // Tratamiento de aguas residuales - Tarifa no doméstica
-    treatmentBasic: {
-        name: 'Tractament d\'Aigües - Tram 1',
-        range: '0-500 m³',
-        pricePerM3: 1.25,
-        description: 'Tratamiento residuos primer tram'
-    },
-    treatmentMedium: {
-        name: 'Tractament d\'Aigües - Tram 2',
-        range: '501-1.500 m³',
-        pricePerM3: 1.65,
-        description: 'Tratamiento residuos segundo tram'
-    },
-    treatmentHigh: {
-        name: 'Tractament d\'Aigües - Tram 3',
-        range: '>1.500 m³',
-        pricePerM3: 1.95,
-        description: 'Tratamiento residuos tercer tram'
-    },
-
-    // Fixed costs
-    fixedCosts: {
-        meterCalibration: 150, // € anual - Calibres estándar
-        minimumConsumption: 3, // m³ mínimo mensual garantizado
-        minimumMonthlyCharge: 12 // € mínimo mensual
-    },
-
-    // Metropolitan taxes
-    tmtrBasic: 0.58, // €/m³ - TMTR (Tasa Metropolitana de Tratamiento de Residuos)
-    canonAgua: 0.092, // €/m³ - Cànon de l'Aigua (Generalitat de Catalunya)
-
-    // Other fixed charges
-    fixedSupplyCharge: 8.50, // € monthly - Cuota de disponibilidad
-    fixedTreatmentCharge: 6.75, // € monthly - Cuota de disponibilidad tratamiento
-};
-
+const WATER_PRICE = 2.50; // €/m³ en Barcelona
 const CO2_FACTOR = 0.294; // kg CO2/kWh
 const CONSUMABLES_MONTHLY_AVG = 180; // € promedio mensual (excluyendo vacaciones)
 const CLEANING_MONTHLY_AVG = 1200; // € promedio mensual (sueldo + material)
@@ -125,58 +62,10 @@ const COLORS = {
     aguaClaro: '#58d68d'
 };
 
-// Función para calcular el coste del agua con tarifas reales
-function calculateWaterCost(m3Consumed) {
-    let cost = 0;
-
-    // 1. CÁNON DE L'AIGUA (Suministro) - Tramos progresivos
-    if (m3Consumed > 0) {
-        const basicConsumption = Math.min(m3Consumed, 500);
-        cost += basicConsumption * WATER_TARIFFS.supplyBasic.pricePerM3;
-    }
-    if (m3Consumed > 500) {
-        const mediumConsumption = Math.min(m3Consumed - 500, 1000);
-        cost += mediumConsumption * WATER_TARIFFS.supplyMedium.pricePerM3;
-    }
-    if (m3Consumed > 1500) {
-        const highConsumption = m3Consumed - 1500;
-        cost += highConsumption * WATER_TARIFFS.supplyHigh.pricePerM3;
-    }
-
-    // 2. TRATAMIENTO DE AGUAS RESIDUALES - Tramos progresivos
-    if (m3Consumed > 0) {
-        const basicTreatment = Math.min(m3Consumed, 500);
-        cost += basicTreatment * WATER_TARIFFS.treatmentBasic.pricePerM3;
-    }
-    if (m3Consumed > 500) {
-        const mediumTreatment = Math.min(m3Consumed - 500, 1000);
-        cost += mediumTreatment * WATER_TARIFFS.treatmentMedium.pricePerM3;
-    }
-    if (m3Consumed > 1500) {
-        const highTreatment = m3Consumed - 1500;
-        cost += highTreatment * WATER_TARIFFS.treatmentHigh.pricePerM3;
-    }
-
-    // 3. TMTR (Tasa Metropolitana de Tratamiento de Residuos)
-    cost += m3Consumed * WATER_TARIFFS.tmtrBasic;
-
-    // 4. CÀNON DE L'AIGUA (Generalitat de Catalunya)
-    cost += m3Consumed * WATER_TARIFFS.canonAgua;
-
-    // 5. Cuotas fijas mensuales
-    const monthlyFixed = WATER_TARIFFS.fixedSupplyCharge + WATER_TARIFFS.fixedTreatmentCharge;
-    cost += monthlyFixed * 12; // Anualizar
-
-    // 6. Cuota de calibración del contador (cuota única anual)
-    cost += WATER_TARIFFS.fixedCosts.meterCalibration;
-
-    return cost;
-}
-
 // Estratègies de reducció
 const REDUCTION_STRATEGIES = {
     energia: {
-        name: 'Energia Elèctrica',
+        name: 'Energía Elèctrica',
         icon: '⚡',
         unit: '€',
         reduction: 0.30,
@@ -214,7 +103,7 @@ const REDUCTION_STRATEGIES = {
             {
                 id: 'energia_4',
                 title: 'Auditoria energètica i formació',
-                description: 'Identificar consums anòmals i conscienciar al personal',
+                description: 'Identificar consumos anòmals i conscienciar al personal',
                 impact: 0.05,
                 timeline: 'Mes 1',
                 cost: 'Baix',
@@ -231,8 +120,8 @@ const REDUCTION_STRATEGIES = {
         actions: [
             {
                 id: 'agua_1',
-                title: 'Instal·lació d\'\aixetes de baix flux',
-                description: 'Aixetes i dutxes amb airejadors que redueixen 30-50% del consum',
+                title: 'Instal·lació de grifos de baix flux',
+                description: 'Grifos i dutxes amb aireadors que redueixen 30-50% del consum',
                 impact: 0.12,
                 timeline: 'Mes 1-3',
                 cost: 'Baix',
@@ -242,7 +131,7 @@ const REDUCTION_STRATEGIES = {
             {
                 id: 'agua_2',
                 title: 'Reparació de fuites',
-                description: 'Una fuga petita pot perdre 200L/dia. Revisió trimestral',
+                description: 'Una fuga petita pot perder 200L/dia. Revisió trimestral',
                 impact: 0.08,
                 timeline: 'Mes 1',
                 cost: 'Baix',
@@ -262,7 +151,7 @@ const REDUCTION_STRATEGIES = {
             {
                 id: 'agua_4',
                 title: 'Reutilització d\'aigües grises',
-                description: 'Sistemes per reutilitzar aigua de pluja i aires condicionats',
+                description: 'Sistemes per reutilitzar aigua de pluja i aires acondicionats',
                 impact: 0.03,
                 timeline: 'Mes 13-24',
                 cost: 'Alt',
@@ -337,8 +226,8 @@ const REDUCTION_STRATEGIES = {
             },
             {
                 id: 'limpieza_2',
-                title: 'Microfibres i tècniques de neteja en sec',
-                description: 'Draps de microfibres redueixen ús d\'aigua i químics',
+                title: 'Microfiber i tècniques de neteja en sec',
+                description: 'Trapos de microfiber redueixen ús d\'aigua i químics',
                 impact: 0.08,
                 timeline: 'Mes 2-4',
                 cost: 'Baix',
@@ -703,9 +592,9 @@ function calculateWaterMetrics(allData) {
         }
     });
 
-    // Calcular coste con tarifas reales de Aigües de Barcelona
-    const totalYearCost = calculateWaterCost(totalYear);
-    const totalSchoolYearCost = calculateWaterCost(totalSchoolYear);
+    const costPerM3 = WATER_PRICE;
+    const totalYearCost = totalYear * costPerM3;
+    const totalSchoolYearCost = totalSchoolYear * costPerM3;
 
     return {
         total: totalYear,
@@ -782,14 +671,14 @@ function calculateSpecialPeriods() {
     const easterEnergy = (easterEnergyPerDay * easterDays * 0.7) * ELECTRICITY_PRICE;
 
     const easterWaterPerDay = monthlyWater[3].total / monthlyWater[3].daysInMonth;
-    const easterWater = calculateWaterCost(easterWaterPerDay * easterDays * 0.7);
+    const easterWater = (easterWaterPerDay * easterDays * 0.7) * WATER_PRICE;
 
     // Estiu (Juny, Juliol, Agost - 3 mesos)
     const summerEnergyTotal = monthlyEnergy[5].net + monthlyEnergy[6].net + monthlyEnergy[7].net;
     const summerEnergy = (summerEnergyTotal / 3) * ELECTRICITY_PRICE;
 
     const summerWaterTotal = monthlyWater[5].total + monthlyWater[6].total + monthlyWater[7].total;
-    const summerWater = calculateWaterCost(summerWaterTotal / 3);
+    const summerWater = (summerWaterTotal / 3) * WATER_PRICE;
 
     // Nadal (1 setmana en desembre, ~7 dies)
     const christmasDays = 7;
@@ -797,7 +686,7 @@ function calculateSpecialPeriods() {
     const christmasEnergy = (christmasEnergyPerDay * christmasDays * 0.7) * ELECTRICITY_PRICE;
 
     const christmasWaterPerDay = monthlyWater[11].total / monthlyWater[11].daysInMonth;
-    const christmasWater = calculateWaterCost(christmasWaterPerDay * christmasDays * 0.7);
+    const christmasWater = (christmasWaterPerDay * christmasDays * 0.7) * WATER_PRICE;
 
     // Promedio anual
     let totalEnergy = 0, totalWater = 0;
@@ -806,7 +695,7 @@ function calculateSpecialPeriods() {
         totalWater += monthlyWater[month].total;
     });
     const avgEnergy = (totalEnergy / 12) * ELECTRICITY_PRICE;
-    const avgWater = calculateWaterCost(totalWater / 12);
+    const avgWater = (totalWater / 12) * WATER_PRICE;
 
     return {
         easterEnergy, easterWater,
@@ -903,7 +792,7 @@ function renderDashboard() {
         <div class="dashboard">
             <div class="dashboard-header">
                 <h2>📊 Dashboard Principal</h2>
-                <p>Anàlisi de consums i costos anuals</p>
+                <p>Anàlisi de consumos i costos anuals</p>
             </div>
 
             <div class="kpi-container">
@@ -911,7 +800,7 @@ function renderDashboard() {
                     <div class="kpi-card energy">
                         <div class="kpi-icon">⚡</div>
                         <div class="kpi-content">
-                            <h3>Energia</h3>
+                            <h3>Energía</h3>
                             <p class="kpi-value">${formatNumber(annualCost.energia)}</p>
                             <p class="kpi-unit">€/any</p>
                             <p class="kpi-secondary">Promig: ${formatNumber(metrics.energia.promedioCost)}/mes</p>
@@ -951,7 +840,7 @@ function renderDashboard() {
             </div>
 
             <div class="dashboard-total">
-                <h3>💰 Despesa Total Anual</h3>
+                <h3>💰 Gast Total Anual</h3>
                 <p class="total-cost">${formatNumber(annualCost.total)} €</p>
             </div>
 
@@ -979,7 +868,7 @@ function renderDashboard() {
 
                 <div class="special-periods-container">
                     <div class="chart-section half-width">
-                        <h3>📅 Períodes Especials - Energia</h3>
+                        <h3>📅 Períodes Especials - Energía</h3>
                         <p class="periods-info">Setmana Santa (1 setmana Abril) | Estiu (Juny - Agost) | Nadal (1 setmana Desembre)</p>
                         <div class="chart-wrapper">
                             <canvas id="specialPeriodsEnergyChart"></canvas>
@@ -1024,7 +913,7 @@ function renderEnergyMonthlyChart() {
         data: {
             labels: labels,
             datasets: [{
-                label: 'Cost Energia (€)',
+                label: 'Cost Energía (€)',
                 data: data,
                 backgroundColor: COLORS.energia,
                 borderColor: COLORS.energiaOscuro,
@@ -1043,13 +932,14 @@ function renderEnergyMonthlyChart() {
 
 function renderWaterMonthlyChart() {
     const monthlyData = getMonthlyWaterConsumption();
+    const costPerM3 = WATER_PRICE;
 
     const labels = [];
     const data = [];
 
     for (let i = 0; i < 12; i++) {
         labels.push(getMonthName(i));
-        data.push(calculateWaterCost(monthlyData[i].total));
+        data.push(monthlyData[i].total * costPerM3);
     }
 
     const ctx = document.getElementById('waterMonthlyChart').getContext('2d');
@@ -1082,7 +972,7 @@ function renderCostDistributionChart() {
     allCharts.costDistribution = new Chart(ctx, {
         type: 'doughnut',
         data: {
-            labels: ['Energia', 'Aigua', 'Consumibles', 'Neteja'],
+            labels: ['Energía', 'Aigua', 'Consumibles', 'Neteja'],
             datasets: [{
                 data: [annualCost.energia, annualCost.agua, annualCost.consumibles, annualCost.limpieza],
                 backgroundColor: [COLORS.energia, COLORS.agua, COLORS.consumibles, COLORS.limpieza],
@@ -1105,10 +995,10 @@ function renderSpecialPeriodsEnergyChart() {
     allCharts.specialPeriodsEnergy = new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: ['Setmana Santa', 'Estiu', 'Nadal', 'Mitjana'],
+            labels: ['Setmana Santa', 'Estiu', 'Nadal', 'Promig'],
             datasets: [
                 {
-                    label: 'Energia (€)',
+                    label: 'Energía (€)',
                     data: [periods.easterEnergy, periods.summerEnergy, periods.christmasEnergy, periods.avgEnergy],
                     backgroundColor: COLORS.energia,
                     borderColor: COLORS.energiaOscuro,
@@ -1133,7 +1023,7 @@ function renderSpecialPeriodsWaterChart() {
     allCharts.specialPeriodsWater = new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: ['Setmana Santa', 'Estiu', 'Nadal', 'Mitjana'],
+            labels: ['Setmana Santa', 'Estiu', 'Nadal', 'Promig'],
             datasets: [
                 {
                     label: 'Aigua (€)',
@@ -1164,14 +1054,14 @@ function renderAnalisis() {
         <div class="analysis-container">
             <div class="analysis-header">
                 <h2>📈 Anàlisi Detallat</h2>
-                <p>Desglossament de consums i costos per període</p>
+                <p>Desglossament de consumos i costos per període</p>
             </div>
 
             <div class="analysis-spacer"></div>
 
             <div class="metrics-detailed">
                 <div class="metric-card-detailed">
-                    <h4>⚡ Energia - Any Complet</h4>
+                    <h4>⚡ Energía - Año Complet</h4>
                     <div class="metric-values">
                         <div class="metric-value">
                             <span class="label">Consum Anual</span>
@@ -1182,14 +1072,14 @@ function renderAnalisis() {
                             <span class="value highlight">${formatNumber(annualCost.energia)} €</span>
                         </div>
                         <div class="metric-value">
-                            <span class="label">Mitjana Mensual</span>
+                            <span class="label">Promig Mensual</span>
                             <span class="value">${formatNumber(metrics.energia.promedioCost)} €</span>
                         </div>
                     </div>
                 </div>
 
                 <div class="metric-card-detailed">
-                    <h4>⚡ Energia - Període Escolar (Sept-Jun)</h4>
+                    <h4>⚡ Energía - Període Escolar (Sept-Jun)</h4>
                     <div class="metric-values">
                         <div class="metric-value">
                             <span class="label">Consum Període</span>
@@ -1200,25 +1090,25 @@ function renderAnalisis() {
                             <span class="value highlight">${formatNumber(metrics.energia.totalEscolarCost)} €</span>
                         </div>
                         <div class="metric-value">
-                            <span class="label">% vs Any Complet</span>
+                            <span class="label">% vs Año Complet</span>
                             <span class="value highlight">${((metrics.energia.totalEscolarCost / annualCost.energia) * 100).toFixed(1)}%</span>
                         </div>
                     </div>
                 </div>
 
                 <div class="metric-card-detailed">
-                    <h4>💧 Aigua - Any Complet</h4>
+                    <h4>💧 Aigua - Año Complet</h4>
                     <div class="metric-values">
                         <div class="metric-value">
                             <span class="label">Consum Anual</span>
                             <span class="value">${formatNumber(metrics.agua.total)} m³</span>
                         </div>
                         <div class="metric-value">
-                            <span class="label">Cost Anual (Tarifes Aigües Barcelona)</span>
+                            <span class="label">Cost Anual</span>
                             <span class="value highlight">${formatNumber(annualCost.agua)} €</span>
                         </div>
                         <div class="metric-value">
-                            <span class="label">Mitjana Mensual</span>
+                            <span class="label">Promig Mensual</span>
                             <span class="value">${formatNumber(metrics.agua.promedioCost)} €</span>
                         </div>
                     </div>
@@ -1236,21 +1126,21 @@ function renderAnalisis() {
                             <span class="value highlight">${formatNumber(metrics.agua.totalEscolarCost)} €</span>
                         </div>
                         <div class="metric-value">
-                            <span class="label">% vs Any Complet</span>
+                            <span class="label">% vs Año Complet</span>
                             <span class="value highlight">${((metrics.agua.totalEscolarCost / annualCost.agua) * 100).toFixed(1)}%</span>
                         </div>
                     </div>
                 </div>
 
                 <div class="metric-card-detailed">
-                    <h4>📄 Consumibles - Any Complet</h4>
+                    <h4>📄 Consumibles - Año Complet</h4>
                     <div class="metric-values">
                         <div class="metric-value">
-                            <span class="label">Despesa Anual</span>
+                            <span class="label">Gast Anual</span>
                             <span class="value highlight">${formatNumber(annualCost.consumibles)} €</span>
                         </div>
                         <div class="metric-value">
-                            <span class="label">Mitjana Mensual</span>
+                            <span class="label">Promig Mensual</span>
                             <span class="value">${formatNumber(metrics.consumibles.promedio)} €</span>
                         </div>
                     </div>
@@ -1260,25 +1150,25 @@ function renderAnalisis() {
                     <h4>📄 Consumibles - Període Escolar (Sept-Jun)</h4>
                     <div class="metric-values">
                         <div class="metric-value">
-                            <span class="label">Despesa Període</span>
+                            <span class="label">Gast Període</span>
                             <span class="value">${formatNumber(metrics.consumibles.totalEscolar)} €</span>
                         </div>
                         <div class="metric-value">
-                            <span class="label">% vs Any Complet</span>
+                            <span class="label">% vs Año Complet</span>
                             <span class="value highlight">${((metrics.consumibles.totalEscolar / annualCost.consumibles) * 100).toFixed(1)}%</span>
                         </div>
                     </div>
                 </div>
 
                 <div class="metric-card-detailed">
-                    <h4>🧹 Neteja - Any Complet</h4>
+                    <h4>🧹 Neteja - Año Complet</h4>
                     <div class="metric-values">
                         <div class="metric-value">
-                            <span class="label">Despesa Anual</span>
+                            <span class="label">Gast Anual</span>
                             <span class="value highlight">${formatNumber(annualCost.limpieza)} €</span>
                         </div>
                         <div class="metric-value">
-                            <span class="label">Mitjana Mensual</span>
+                            <span class="label">Promig Mensual</span>
                             <span class="value">${formatNumber(metrics.limpieza.promedio)} €</span>
                         </div>
                     </div>
@@ -1288,11 +1178,11 @@ function renderAnalisis() {
                     <h4>🧹 Neteja - Període Escolar (Sept-Jun)</h4>
                     <div class="metric-values">
                         <div class="metric-value">
-                            <span class="label">Despesa Període</span>
+                            <span class="label">Gast Període</span>
                             <span class="value">${formatNumber(metrics.limpieza.totalEscolar)} €</span>
                         </div>
                         <div class="metric-value">
-                            <span class="label">% vs Any Complet</span>
+                            <span class="label">% vs Año Complet</span>
                             <span class="value highlight">${((metrics.limpieza.totalEscolar / annualCost.limpieza) * 100).toFixed(1)}%</span>
                         </div>
                     </div>
@@ -1300,93 +1190,45 @@ function renderAnalisis() {
             </div>
 
             <div class="comparison-table-section">
-                <h3>Comparativa Any Escolar vs Any Complet</h3>
+                <h3>Comparativa Año Escolar vs Año Complet</h3>
                 <table class="comparison-table">
                     <thead>
                         <tr>
                             <th>Tipus de Consum</th>
-                            <th>Any Escolar (Sept-Jun)</th>
-                            <th>Any Complet</th>
+                            <th>Año Escolar (Sept-Jun)</th>
+                            <th>Año Complet</th>
                             <th>Diferència</th>
                             <th>% Variació</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td data-label="Tipus de Consum">⚡ Energia (€)</td>
-                            <td data-label="Any Escolar (Sept-Jun)">${formatNumber(metrics.energia.totalEscolarCost)} €</td>
-                            <td data-label="Any Complet">${formatNumber(annualCost.energia)} €</td>
+                            <td data-label="Tipus de Consum">⚡ Energía (€)</td>
+                            <td data-label="Año Escolar (Sept-Jun)">${formatNumber(metrics.energia.totalEscolarCost)} €</td>
+                            <td data-label="Año Complet">${formatNumber(annualCost.energia)} €</td>
                             <td data-label="Diferència">${formatNumber(annualCost.energia - metrics.energia.totalEscolarCost)} €</td>
                             <td data-label="% Variació">${((annualCost.energia - metrics.energia.totalEscolarCost) / metrics.energia.totalEscolarCost * 100).toFixed(2)}%</td>
                         </tr>
                         <tr>
                             <td data-label="Tipus de Consum">💧 Aigua (€)</td>
-                            <td data-label="Any Escolar (Sept-Jun)">${formatNumber(metrics.agua.totalEscolarCost)} €</td>
-                            <td data-label="Any Complet">${formatNumber(annualCost.agua)} €</td>
+                            <td data-label="Año Escolar (Sept-Jun)">${formatNumber(metrics.agua.totalEscolarCost)} €</td>
+                            <td data-label="Año Complet">${formatNumber(annualCost.agua)} €</td>
                             <td data-label="Diferència">${formatNumber(annualCost.agua - metrics.agua.totalEscolarCost)} €</td>
                             <td data-label="% Variació">${((annualCost.agua - metrics.agua.totalEscolarCost) / metrics.agua.totalEscolarCost * 100).toFixed(2)}%</td>
                         </tr>
                         <tr>
                             <td data-label="Tipus de Consum">📄 Consumibles (€)</td>
-                            <td data-label="Any Escolar (Sept-Jun)">${formatNumber(metrics.consumibles.totalEscolar)} €</td>
-                            <td data-label="Any Complet">${formatNumber(annualCost.consumibles)} €</td>
+                            <td data-label="Año Escolar (Sept-Jun)">${formatNumber(metrics.consumibles.totalEscolar)} €</td>
+                            <td data-label="Año Complet">${formatNumber(annualCost.consumibles)} €</td>
                             <td data-label="Diferència">${formatNumber(annualCost.consumibles - metrics.consumibles.totalEscolar)} €</td>
                             <td data-label="% Variació">${((annualCost.consumibles - metrics.consumibles.totalEscolar) / metrics.consumibles.totalEscolar * 100).toFixed(2)}%</td>
                         </tr>
                         <tr>
                             <td data-label="Tipus de Consum">🧹 Neteja (€)</td>
-                            <td data-label="Any Escolar (Sept-Jun)">${formatNumber(metrics.limpieza.totalEscolar)} €</td>
-                            <td data-label="Any Complet">${formatNumber(annualCost.limpieza)} €</td>
+                            <td data-label="Año Escolar (Sept-Jun)">${formatNumber(metrics.limpieza.totalEscolar)} €</td>
+                            <td data-label="Año Complet">${formatNumber(annualCost.limpieza)} €</td>
                             <td data-label="Diferència">${formatNumber(annualCost.limpieza - metrics.limpieza.totalEscolar)} €</td>
                             <td data-label="% Variació">${((annualCost.limpieza - metrics.limpieza.totalEscolar) / metrics.limpieza.totalEscolar * 100).toFixed(2)}%</td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <h3 style="margin-top: 30px; padding-top: 20px; border-top: 2px solid #ecf0f1;">Desglossament de Tarifa Aigua (Aigües de Barcelona)</h3>
-                <table class="comparison-table">
-                    <thead>
-                        <tr>
-                            <th>Concepte</th>
-                            <th>Descripció</th>
-                            <th>Import Anual</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td data-label="Concepte">Canó de l'Aigua (Tram 1: 0-500 m³)</td>
-                            <td data-label="Descripció">${WATER_TARIFFS.supplyBasic.pricePerM3} €/m³</td>
-                            <td data-label="Import Anual">${formatNumber(Math.min(annualCost.agua * 0.2, 500 * WATER_TARIFFS.supplyBasic.pricePerM3))} €</td>
-                        </tr>
-                        <tr>
-                            <td data-label="Concepte">Canó de l'Aigua (Tram 2: 501-1.500 m³)</td>
-                            <td data-label="Descripció">${WATER_TARIFFS.supplyMedium.pricePerM3} €/m³</td>
-                            <td data-label="Import Anual">Proporcional</td>
-                        </tr>
-                        <tr>
-                            <td data-label="Concepte">Canó de l'Aigua (Tram 3: >1.500 m³)</td>
-                            <td data-label="Descripció">${WATER_TARIFFS.supplyHigh.pricePerM3} €/m³</td>
-                            <td data-label="Import Anual">Proporcional</td>
-                        </tr>
-                        <tr>
-                            <td data-label="Concepte">TMTR (Taxa Metropolitana)</td>
-                            <td data-label="Descripció">${WATER_TARIFFS.tmtrBasic} €/m³</td>
-                            <td data-label="Import Anual">${formatNumber(metrics.agua.total * WATER_TARIFFS.tmtrBasic)} €</td>
-                        </tr>
-                        <tr>
-                            <td data-label="Concepte">Cànon de l'Aigua (Generalitat)</td>
-                            <td data-label="Descripció">${WATER_TARIFFS.canonAgua} €/m³</td>
-                            <td data-label="Import Anual">${formatNumber(metrics.agua.total * WATER_TARIFFS.canonAgua)} €</td>
-                        </tr>
-                        <tr>
-                            <td data-label="Concepte">Quota Fixa Mensual (Disponibilidad)</td>
-                            <td data-label="Descripció">${WATER_TARIFFS.fixedSupplyCharge + WATER_TARIFFS.fixedTreatmentCharge} €/mes</td>
-                            <td data-label="Import Anual">${formatNumber((WATER_TARIFFS.fixedSupplyCharge + WATER_TARIFFS.fixedTreatmentCharge) * 12)} €</td>
-                        </tr>
-                        <tr>
-                            <td data-label="Concepte">Calibració de Contador</td>
-                            <td data-label="Descripció">Quota única anual</td>
-                            <td data-label="Import Anual">${formatNumber(WATER_TARIFFS.fixedCosts.meterCalibration)} €</td>
                         </tr>
                     </tbody>
                 </table>
@@ -1409,7 +1251,7 @@ function renderReductionCalculator() {
             </div>
 
             <div class="reduction-menu">
-                <button class="menu-btn ${currentCalculationType === 'energia' ? 'active' : ''}" onclick="changeCalculationType('energia')">⚡ Energia</button>
+                <button class="menu-btn ${currentCalculationType === 'energia' ? 'active' : ''}" onclick="changeCalculationType('energia')">⚡ Energía</button>
                 <button class="menu-btn ${currentCalculationType === 'agua' ? 'active' : ''}" onclick="changeCalculationType('agua')">💧 Aigua</button>
                 <button class="menu-btn ${currentCalculationType === 'consumibles' ? 'active' : ''}" onclick="changeCalculationType('consumibles')">📄 Consumibles</button>
                 <button class="menu-btn ${currentCalculationType === 'limpieza' ? 'active' : ''}" onclick="changeCalculationType('limpieza')">🧹 Neteja</button>
@@ -1436,15 +1278,15 @@ function renderReductionCalculator() {
                             <span class="value">${formatNumber(metrics.baseline)} €</span>
                         </div>
                         <div class="value-card">
-                            <span class="label">Any 1 (2027)</span>
+                            <span class="label">Año 1 (2027)</span>
                             <span class="value">${formatNumber(metrics.year1)} €</span>
                         </div>
                         <div class="value-card">
-                            <span class="label">Any 2 (2028)</span>
+                            <span class="label">Año 2 (2028)</span>
                             <span class="value">${formatNumber(metrics.year2)} €</span>
                         </div>
                         <div class="value-card">
-                            <span class="label">Any 3 (2029)</span>
+                            <span class="label">Año 3 (2029)</span>
                             <span class="value">${formatNumber(metrics.year3)} €</span>
                         </div>
                     </div>
@@ -1492,6 +1334,10 @@ function renderReductionCalculator() {
                     </div>
                 </div>
             </div>
+
+            <div class="export-section full-width">
+                <button class="btn btn-primary" onclick="exportReductionToPDF()">📥 Exportar a PDF</button>
+            </div>
         </div>
     `;
 
@@ -1527,7 +1373,7 @@ function renderReductionComparisonChart() {
     allCharts.reductionComparison = new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: ['Baseline 2026', 'Any 1 (2027)', 'Any 2 (2028)', 'Any 3 (2029)'],
+            labels: ['Baseline 2026', 'Año 1 (2027)', 'Año 2 (2028)', 'Año 3 (2029)'],
             datasets: [
                 {
                     label: 'Baseline (Sense Accions)',
@@ -1556,5 +1402,411 @@ function renderReductionComparisonChart() {
                 x: { stacked: false }
             }
         }
+    });
+}
+
+// ===== EXPORTAR A PDF =====
+// ===== EXPORTAR A PDF =====
+function exportReductionToPDF() {
+    const metrics = calculateReductionMetrics(currentCalculationType);
+    const strategy = REDUCTION_STRATEGIES[currentCalculationType];
+    const enabledActions = selectedActions[currentCalculationType] || [];
+    const annualCost = calculateTotalAnnualCost();
+
+    // Determinar el tipo de consumo seleccionado
+    let costValue = 0;
+    if (currentCalculationType === 'energia') {
+        costValue = annualCost.energia;
+    } else if (currentCalculationType === 'agua') {
+        costValue = annualCost.agua;
+    } else if (currentCalculationType === 'consumibles') {
+        costValue = annualCost.consumibles;
+    } else if (currentCalculationType === 'limpieza') {
+        costValue = annualCost.limpieza;
+    }
+
+    const htmlContent = `
+        <!DOCTYPE html>
+        <html lang="ca">
+        <head>
+            <meta charset="UTF-8">
+            <title>Pla de Reducció - ${strategy.name}</title>
+            <style>
+                * {
+                    margin: 0;
+                    padding: 0;
+                    box-sizing: border-box;
+                }
+                body {
+                    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                    color: #333;
+                    line-height: 1.4;
+                }
+                .container {
+                    max-width: 800px;
+                    margin: 0 auto;
+                    padding: 20px;
+                }
+                .header {
+                    text-align: center;
+                    margin-bottom: 15px;
+                    border-bottom: 2px solid #3498db;
+                    padding-bottom: 10px;
+                }
+                .header h1 {
+                    font-size: 22px;
+                    color: #2c3e50;
+                    margin-bottom: 5px;
+                }
+                .header p {
+                    font-size: 12px;
+                    color: #7f8c8d;
+                    margin-bottom: 3px;
+                }
+                .date {
+                    font-size: 10px;
+                    color: #95a5a6;
+                    margin-top: 5px;
+                }
+                .section {
+                    margin-bottom: 15px;
+                    page-break-inside: avoid;
+                }
+                .section h2 {
+                    font-size: 15px;
+                    color: #2c3e50;
+                    margin-bottom: 8px;
+                    padding-bottom: 5px;
+                    border-bottom: 1px solid #ecf0f1;
+                }
+                .metrics-grid {
+                    display: grid;
+                    grid-template-columns: repeat(2, 1fr);
+                    gap: 8px;
+                    margin-bottom: 10px;
+                }
+                .metric-box {
+                    background: #f9f9f9;
+                    padding: 8px;
+                    border-radius: 4px;
+                    border-left: 2px solid #3498db;
+                }
+                .metric-label {
+                    font-size: 9px;
+                    color: #7f8c8d;
+                    text-transform: uppercase;
+                    font-weight: 600;
+                    margin-bottom: 3px;
+                }
+                .metric-value {
+                    font-size: 16px;
+                    font-weight: 700;
+                    color: #2c3e50;
+                }
+                .savings-table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    margin-bottom: 12px;
+                    font-size: 10px;
+                }
+                .savings-table th {
+                    background: #3498db;
+                    color: white;
+                    padding: 6px 4px;
+                    text-align: left;
+                    font-weight: 600;
+                    font-size: 9px;
+                }
+                .savings-table td {
+                    padding: 5px 4px;
+                    border-bottom: 1px solid #ecf0f1;
+                    font-size: 9px;
+                }
+                .savings-table tbody tr:nth-child(even) {
+                    background: #f5f5f5;
+                }
+                .actions-section {
+                    background: #f9f9f9;
+                    padding: 10px;
+                    border-radius: 6px;
+                    margin-bottom: 12px;
+                }
+                .action-item {
+                    margin-bottom: 8px;
+                    padding: 8px;
+                    background: white;
+                    border-left: 2px solid #2ecc71;
+                    border-radius: 3px;
+                    page-break-inside: avoid;
+                }
+                .action-title {
+                    font-weight: 600;
+                    font-size: 11px;
+                    color: #2c3e50;
+                    margin-bottom: 3px;
+                }
+                .action-description {
+                    font-size: 9px;
+                    color: #555;
+                    margin-bottom: 4px;
+                    line-height: 1.3;
+                }
+                .action-details {
+                    display: grid;
+                    grid-template-columns: repeat(3, 1fr);
+                    gap: 5px;
+                    font-size: 8px;
+                }
+                .action-detail-item {
+                    background: #ecf0f1;
+                    padding: 4px;
+                    border-radius: 2px;
+                }
+                .action-detail-label {
+                    font-weight: 600;
+                    color: #7f8c8d;
+                    font-size: 8px;
+                }
+                .action-detail-value {
+                    color: #2c3e50;
+                    font-size: 9px;
+                }
+                .not-selected {
+                    background: #fff5f5;
+                    border-left-color: #e74c3c;
+                }
+                .summary-box {
+                    background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+                    color: white;
+                    padding: 12px;
+                    border-radius: 6px;
+                    margin-bottom: 12px;
+                }
+                .summary-box h3 {
+                    font-size: 12px;
+                    margin-bottom: 8px;
+                }
+                .summary-grid {
+                    display: grid;
+                    grid-template-columns: repeat(2, 1fr);
+                    gap: 8px;
+                }
+                .summary-item {
+                    background: rgba(255, 255, 255, 0.1);
+                    padding: 8px;
+                    border-radius: 3px;
+                }
+                .summary-item-label {
+                    font-size: 9px;
+                    opacity: 0.9;
+                    margin-bottom: 3px;
+                }
+                .summary-item-value {
+                    font-size: 15px;
+                    font-weight: 700;
+                }
+                .circle-principles {
+                    background: #d4edda;
+                    border-left: 3px solid #2ecc71;
+                    padding: 10px;
+                    border-radius: 4px;
+                    margin-top: 10px;
+                }
+                .circle-principles h4 {
+                    color: #155724;
+                    font-size: 11px;
+                    margin-bottom: 6px;
+                }
+                .circle-principles ul {
+                    list-style: none;
+                    padding: 0;
+                }
+                .circle-principles li {
+                    font-size: 9px;
+                    color: #155724;
+                    padding: 3px 0;
+                    border-bottom: 1px solid rgba(21, 87, 36, 0.2);
+                    line-height: 1.3;
+                }
+                .circle-principles li:last-child {
+                    border-bottom: none;
+                }
+                .footer {
+                    text-align: center;
+                    margin-top: 15px;
+                    padding-top: 10px;
+                    border-top: 1px solid #ecf0f1;
+                    font-size: 9px;
+                    color: #95a5a6;
+                }
+                @media print {
+                    body {
+                        margin: 0;
+                        padding: 0;
+                    }
+                    .container {
+                        padding: 15px;
+                    }
+                }
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <div class="header">
+                    <h1>${strategy.icon} Pla de Reducció - ${strategy.name}</h1>
+                    <p>Calculadora d'Estalvi Energètic</p>
+                    <p class="date">Generat: ${new Date().toLocaleDateString('ca-ES', { year: 'numeric', month: '2-digit', day: '2-digit' })}</p>
+                </div>
+
+                <div class="section">
+                    <h2>📊 Resum Executiu</h2>
+                    <div class="summary-box">
+                        <h3>Projeccions de Costos i Estalvis</h3>
+                        <div class="summary-grid">
+                            <div class="summary-item">
+                                <div class="summary-item-label">Baseline 2026</div>
+                                <div class="summary-item-value">${formatNumber(metrics.baseline)} €</div>
+                            </div>
+                            <div class="summary-item">
+                                <div class="summary-item-label">Año 1 (2027)</div>
+                                <div class="summary-item-value">${formatNumber(metrics.year1)} €</div>
+                            </div>
+                            <div class="summary-item">
+                                <div class="summary-item-label">Año 2 (2028)</div>
+                                <div class="summary-item-value">${formatNumber(metrics.year2)} €</div>
+                            </div>
+                            <div class="summary-item">
+                                <div class="summary-item-label">Año 3 (2029)</div>
+                                <div class="summary-item-value">${formatNumber(metrics.year3)} €</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <table class="savings-table">
+                        <thead>
+                            <tr>
+                                <th>Any</th>
+                                <th>Sense Accions (€)</th>
+                                <th>Amb Accions (€)</th>
+                                <th>Estalvi (€)</th>
+                                <th>Reduc (%)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>2026</td>
+                                <td>${formatNumber(metrics.baseline)}</td>
+                                <td>${formatNumber(metrics.baseline)}</td>
+                                <td>0.00</td>
+                                <td>0.00%</td>
+                            </tr>
+                            <tr>
+                                <td>2027</td>
+                                <td>${formatNumber(metrics.baselineYear2)}</td>
+                                <td>${formatNumber(metrics.year1)}</td>
+                                <td>${formatNumber(metrics.baselineYear2 - metrics.year1)}</td>
+                                <td>${((1 - metrics.year1 / metrics.baselineYear2) * 100).toFixed(1)}%</td>
+                            </tr>
+                            <tr>
+                                <td>2028</td>
+                                <td>${formatNumber(metrics.baselineYear3)}</td>
+                                <td>${formatNumber(metrics.year2)}</td>
+                                <td>${formatNumber(metrics.baselineYear3 - metrics.year2)}</td>
+                                <td>${((1 - metrics.year2 / metrics.baselineYear3) * 100).toFixed(1)}%</td>
+                            </tr>
+                            <tr>
+                                <td>2029</td>
+                                <td>${formatNumber(metrics.baselineYear4)}</td>
+                                <td>${formatNumber(metrics.year3)}</td>
+                                <td>${formatNumber(metrics.baselineYear4 - metrics.year3)}</td>
+                                <td>${((1 - metrics.year3 / metrics.baselineYear4) * 100).toFixed(1)}%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="section">
+                    <h2>🎯 Accions Implementades</h2>
+                    <div class="actions-section">
+                        ${strategy.actions.map(action => {
+                            const isEnabled = enabledActions.includes(action.id);
+                            return `
+                                <div class="action-item ${!isEnabled ? 'not-selected' : ''}">
+                                    <div class="action-title">${isEnabled ? '✓' : '✗'} ${action.title}</div>
+                                    <div class="action-description">${action.description}</div>
+                                    <div class="action-details">
+                                        <div class="action-detail-item">
+                                            <span class="action-detail-label">Impacte:</span>
+                                            <span class="action-detail-value">${(action.impact * 100).toFixed(1)}%</span>
+                                        </div>
+                                        <div class="action-detail-item">
+                                            <span class="action-detail-label">Timeline:</span>
+                                            <span class="action-detail-value">${action.timeline}</span>
+                                        </div>
+                                        <div class="action-detail-item">
+                                            <span class="action-detail-label">Cost:</span>
+                                            <span class="action-detail-value">${action.cost}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+
+                    <div class="metrics-grid">
+                        <div class="metric-box">
+                            <div class="metric-label">Impacte Total</div>
+                            <div class="metric-value">${(metrics.totalImpact * 100).toFixed(1)}%</div>
+                        </div>
+                        <div class="metric-box">
+                            <div class="metric-label">Reducció Target</div>
+                            <div class="metric-value">${(Math.min(metrics.totalImpact, 0.30) * 100).toFixed(1)}%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h2>🔄 Economia Circular</h2>
+                    <div class="circle-principles">
+                        <h4>Principis de Sostenibilitat</h4>
+                        <ul>
+                            <li><strong>Reduir:</strong> Minimitzar recursos des de l'origen</li>
+                            <li><strong>Reutilitzar:</strong> Donar segona vida als productes</li>
+                            <li><strong>Reciclar:</strong> Processar materials responsablement</li>
+                            <li><strong>Recuperar:</strong> Obtenir energia de residus</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="footer">
+                    <p>&copy; 2026 Calculadora d'Estalvi Energètic | Document generat automàticament</p>
+                </div>
+            </div>
+        </body>
+        </html>
+    `;
+
+    // Crear elemento temporal para el PDF
+    const element = document.createElement('div');
+    element.innerHTML = htmlContent;
+    document.body.appendChild(element);
+
+    // Configurar opciones de html2pdf
+    const options = {
+        margin: 5,
+        filename: `pla-reducció-${strategy.name}-${new Date().toISOString().split('T')[0]}.pdf`,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2, logging: false },
+        jsPDF: { orientation: 'portrait', unit: 'mm', format: 'a4' }
+    };
+
+    // Generar PDF
+    html2pdf().set(options).from(element).save().then(() => {
+        // Remover elemento temporal
+        document.body.removeChild(element);
+        console.log('PDF exportat correctament');
+    }).catch(err => {
+        console.error('Error al exportar PDF:', err);
+        document.body.removeChild(element);
     });
 }
