@@ -1379,13 +1379,13 @@ function renderAnalisis() {
                             <td data-label="Import Anual">${formatNumber(metrics.agua.total * WATER_TARIFFS.canonAgua)} €</td>
                         </tr>
                         <tr>
-                            <td data-label="Concepte">Cuota Fija Mensual (Disponibilidad)</td>
+                            <td data-label="Concepte">Quota Fija Mensual (Disponibilidad)</td>
                             <td data-label="Descripció">${WATER_TARIFFS.fixedSupplyCharge + WATER_TARIFFS.fixedTreatmentCharge} €/mes</td>
                             <td data-label="Import Anual">${formatNumber((WATER_TARIFFS.fixedSupplyCharge + WATER_TARIFFS.fixedTreatmentCharge) * 12)} €</td>
                         </tr>
                         <tr>
-                            <td data-label="Concepte">Calibración de Contador</td>
-                            <td data-label="Descripció">Cuota única anual</td>
+                            <td data-label="Concepte">Calibració de Contador</td>
+                            <td data-label="Descripció">Quota única anual</td>
                             <td data-label="Import Anual">${formatNumber(WATER_TARIFFS.fixedCosts.meterCalibration)} €</td>
                         </tr>
                     </tbody>
