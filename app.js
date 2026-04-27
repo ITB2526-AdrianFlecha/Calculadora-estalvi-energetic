@@ -176,7 +176,7 @@ function calculateWaterCost(m3Consumed) {
 // Estratègies de reducció
 const REDUCTION_STRATEGIES = {
     energia: {
-        name: 'Energía Elèctrica',
+        name: 'Energia Elèctrica',
         icon: '⚡',
         unit: '€',
         reduction: 0.30,
@@ -911,7 +911,7 @@ function renderDashboard() {
                     <div class="kpi-card energy">
                         <div class="kpi-icon">⚡</div>
                         <div class="kpi-content">
-                            <h3>Energía</h3>
+                            <h3>Energia</h3>
                             <p class="kpi-value">${formatNumber(annualCost.energia)}</p>
                             <p class="kpi-unit">€/any</p>
                             <p class="kpi-secondary">Promig: ${formatNumber(metrics.energia.promedioCost)}/mes</p>
@@ -951,7 +951,7 @@ function renderDashboard() {
             </div>
 
             <div class="dashboard-total">
-                <h3>💰 Gast Total Anual</h3>
+                <h3>💰 Despesa Total Anual</h3>
                 <p class="total-cost">${formatNumber(annualCost.total)} €</p>
             </div>
 
@@ -979,7 +979,7 @@ function renderDashboard() {
 
                 <div class="special-periods-container">
                     <div class="chart-section half-width">
-                        <h3>📅 Períodes Especials - Energía</h3>
+                        <h3>📅 Períodes Especials - Energia</h3>
                         <p class="periods-info">Setmana Santa (1 setmana Abril) | Estiu (Juny - Agost) | Nadal (1 setmana Desembre)</p>
                         <div class="chart-wrapper">
                             <canvas id="specialPeriodsEnergyChart"></canvas>
@@ -1024,7 +1024,7 @@ function renderEnergyMonthlyChart() {
         data: {
             labels: labels,
             datasets: [{
-                label: 'Cost Energía (€)',
+                label: 'Cost Energia (€)',
                 data: data,
                 backgroundColor: COLORS.energia,
                 borderColor: COLORS.energiaOscuro,
@@ -1082,7 +1082,7 @@ function renderCostDistributionChart() {
     allCharts.costDistribution = new Chart(ctx, {
         type: 'doughnut',
         data: {
-            labels: ['Energía', 'Aigua', 'Consumibles', 'Neteja'],
+            labels: ['Energia', 'Aigua', 'Consumibles', 'Neteja'],
             datasets: [{
                 data: [annualCost.energia, annualCost.agua, annualCost.consumibles, annualCost.limpieza],
                 backgroundColor: [COLORS.energia, COLORS.agua, COLORS.consumibles, COLORS.limpieza],
@@ -1105,10 +1105,10 @@ function renderSpecialPeriodsEnergyChart() {
     allCharts.specialPeriodsEnergy = new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: ['Setmana Santa', 'Estiu', 'Nadal', 'Promig'],
+            labels: ['Setmana Santa', 'Estiu', 'Nadal', 'Mitjana'],
             datasets: [
                 {
-                    label: 'Energía (€)',
+                    label: 'Energia (€)',
                     data: [periods.easterEnergy, periods.summerEnergy, periods.christmasEnergy, periods.avgEnergy],
                     backgroundColor: COLORS.energia,
                     borderColor: COLORS.energiaOscuro,
@@ -1133,7 +1133,7 @@ function renderSpecialPeriodsWaterChart() {
     allCharts.specialPeriodsWater = new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: ['Setmana Santa', 'Estiu', 'Nadal', 'Promig'],
+            labels: ['Setmana Santa', 'Estiu', 'Nadal', 'Mitjana'],
             datasets: [
                 {
                     label: 'Aigua (€)',
@@ -1171,7 +1171,7 @@ function renderAnalisis() {
 
             <div class="metrics-detailed">
                 <div class="metric-card-detailed">
-                    <h4>⚡ Energía - Any Complet</h4>
+                    <h4>⚡ Energia - Any Complet</h4>
                     <div class="metric-values">
                         <div class="metric-value">
                             <span class="label">Consum Anual</span>
@@ -1182,14 +1182,14 @@ function renderAnalisis() {
                             <span class="value highlight">${formatNumber(annualCost.energia)} €</span>
                         </div>
                         <div class="metric-value">
-                            <span class="label">Promig Mensual</span>
+                            <span class="label">Mitjana Mensual</span>
                             <span class="value">${formatNumber(metrics.energia.promedioCost)} €</span>
                         </div>
                     </div>
                 </div>
 
                 <div class="metric-card-detailed">
-                    <h4>⚡ Energía - Període Escolar (Sept-Jun)</h4>
+                    <h4>⚡ Energia - Període Escolar (Sept-Jun)</h4>
                     <div class="metric-values">
                         <div class="metric-value">
                             <span class="label">Consum Període</span>
@@ -1218,7 +1218,7 @@ function renderAnalisis() {
                             <span class="value highlight">${formatNumber(annualCost.agua)} €</span>
                         </div>
                         <div class="metric-value">
-                            <span class="label">Promig Mensual</span>
+                            <span class="label">Mitjana Mensual</span>
                             <span class="value">${formatNumber(metrics.agua.promedioCost)} €</span>
                         </div>
                     </div>
@@ -1246,11 +1246,11 @@ function renderAnalisis() {
                     <h4>📄 Consumibles - Any Complet</h4>
                     <div class="metric-values">
                         <div class="metric-value">
-                            <span class="label">Gast Anual</span>
+                            <span class="label">Despesa Anual</span>
                             <span class="value highlight">${formatNumber(annualCost.consumibles)} €</span>
                         </div>
                         <div class="metric-value">
-                            <span class="label">Promig Mensual</span>
+                            <span class="label">Mitjana Mensual</span>
                             <span class="value">${formatNumber(metrics.consumibles.promedio)} €</span>
                         </div>
                     </div>
@@ -1260,7 +1260,7 @@ function renderAnalisis() {
                     <h4>📄 Consumibles - Període Escolar (Sept-Jun)</h4>
                     <div class="metric-values">
                         <div class="metric-value">
-                            <span class="label">Gast Període</span>
+                            <span class="label">Despesa Període</span>
                             <span class="value">${formatNumber(metrics.consumibles.totalEscolar)} €</span>
                         </div>
                         <div class="metric-value">
@@ -1274,11 +1274,11 @@ function renderAnalisis() {
                     <h4>🧹 Neteja - Any Complet</h4>
                     <div class="metric-values">
                         <div class="metric-value">
-                            <span class="label">Gast Anual</span>
+                            <span class="label">Despesa Anual</span>
                             <span class="value highlight">${formatNumber(annualCost.limpieza)} €</span>
                         </div>
                         <div class="metric-value">
-                            <span class="label">Promig Mensual</span>
+                            <span class="label">Mitjana Mensual</span>
                             <span class="value">${formatNumber(metrics.limpieza.promedio)} €</span>
                         </div>
                     </div>
@@ -1288,7 +1288,7 @@ function renderAnalisis() {
                     <h4>🧹 Neteja - Període Escolar (Sept-Jun)</h4>
                     <div class="metric-values">
                         <div class="metric-value">
-                            <span class="label">Gast Període</span>
+                            <span class="label">Despesa Període</span>
                             <span class="value">${formatNumber(metrics.limpieza.totalEscolar)} €</span>
                         </div>
                         <div class="metric-value">
@@ -1313,7 +1313,7 @@ function renderAnalisis() {
                     </thead>
                     <tbody>
                         <tr>
-                            <td data-label="Tipus de Consum">⚡ Energía (€)</td>
+                            <td data-label="Tipus de Consum">⚡ Energia (€)</td>
                             <td data-label="Any Escolar (Sept-Jun)">${formatNumber(metrics.energia.totalEscolarCost)} €</td>
                             <td data-label="Any Complet">${formatNumber(annualCost.energia)} €</td>
                             <td data-label="Diferència">${formatNumber(annualCost.energia - metrics.energia.totalEscolarCost)} €</td>
@@ -1409,7 +1409,7 @@ function renderReductionCalculator() {
             </div>
 
             <div class="reduction-menu">
-                <button class="menu-btn ${currentCalculationType === 'energia' ? 'active' : ''}" onclick="changeCalculationType('energia')">⚡ Energía</button>
+                <button class="menu-btn ${currentCalculationType === 'energia' ? 'active' : ''}" onclick="changeCalculationType('energia')">⚡ Energia</button>
                 <button class="menu-btn ${currentCalculationType === 'agua' ? 'active' : ''}" onclick="changeCalculationType('agua')">💧 Aigua</button>
                 <button class="menu-btn ${currentCalculationType === 'consumibles' ? 'active' : ''}" onclick="changeCalculationType('consumibles')">📄 Consumibles</button>
                 <button class="menu-btn ${currentCalculationType === 'limpieza' ? 'active' : ''}" onclick="changeCalculationType('limpieza')">🧹 Neteja</button>
