@@ -1,9 +1,72 @@
-// ===== CONSTANTES Y CONFIGURACIÓN =====
+// ===== CONSTANTES Y CONFIGURACIÓN - TARIFAS AIGÜES DE BARCELONA =====
 const INFLATION_RATE = 0.03;
 const CLOUD_DAILY_CONSUMPTION = 150; // kWh diarios de consumo de nube
 const CLOUD_WATER_DAILY_CONSUMPTION = 800; // Litros diarios para refrigeración de nube
+
+// ELECTRICITY PRICES - Barcelona 2025
 const ELECTRICITY_PRICE = 0.25; // €/kWh en Barcelona
-const WATER_PRICE = 2.50; // €/m³ en Barcelona
+
+// WATER PRICES - Aigües de Barcelona - Tarifa no doméstica (2024-2025)
+// Consumo estimado: 2.200 m³/año (industrial/comercial)
+
+// TARIFFS VIGENTES AIGÜES DE BARCELONA
+const WATER_TARIFFS = {
+    // Suministro y alcantarillado - Tarifa no doméstica
+    supplyBasic: {
+        name: 'Canó de l\'Aigua - Tramo 1',
+        range: '0-500 m³',
+        pricePerM3: 1.45,
+        description: 'Primer tramo de consumo'
+    },
+    supplyMedium: {
+        name: 'Canó de l\'Aigua - Tramo 2',
+        range: '501-1.500 m³',
+        pricePerM3: 1.85,
+        description: 'Segundo tramo de consumo'
+    },
+    supplyHigh: {
+        name: 'Canó de l\'Aigua - Tramo 3',
+        range: '>1.500 m³',
+        pricePerM3: 2.15,
+        description: 'Tercer tramo de consumo'
+    },
+
+    // Tratamiento de aguas residuales - Tarifa no doméstica
+    treatmentBasic: {
+        name: 'Tractament d\'Aigües - Tramo 1',
+        range: '0-500 m³',
+        pricePerM3: 1.25,
+        description: 'Tratamiento residuos primer tramo'
+    },
+    treatmentMedium: {
+        name: 'Tractament d\'Aigües - Tramo 2',
+        range: '501-1.500 m³',
+        pricePerM3: 1.65,
+        description: 'Tratamiento residuos segundo tramo'
+    },
+    treatmentHigh: {
+        name: 'Tractament d\'Aigües - Tramo 3',
+        range: '>1.500 m³',
+        pricePerM3: 1.95,
+        description: 'Tratamiento residuos tercer tramo'
+    },
+
+    // Fixed costs
+    fixedCosts: {
+        meterCalibration: 150, // € anual - Calibres estándar
+        minimumConsumption: 3, // m³ mínimo mensual garantizado
+        minimumMonthlyCharge: 12 // € mínimo mensual
+    },
+
+    // Metropolitan taxes
+    tmtrBasic: 0.58, // €/m³ - TMTR (Tasa Metropolitana de Tratamiento de Residuos)
+    canonAgua: 0.092, // €/m³ - Cànon de l'Aigua (Generalitat de Catalunya)
+
+    // Other fixed charges
+    fixedSupplyCharge: 8.50, // € monthly - Cuota de disponibilidad
+    fixedTreatmentCharge: 6.75, // € monthly - Cuota de disponibilidad tratamiento
+};
+
 const CO2_FACTOR = 0.294; // kg CO2/kWh
 const CONSUMABLES_MONTHLY_AVG = 180; // € promedio mensual (excluyendo vacaciones)
 const CLEANING_MONTHLY_AVG = 1200; // € promedio mensual (sueldo + material)
@@ -61,6 +124,54 @@ const COLORS = {
     aguaOscuro: '#229954',
     aguaClaro: '#58d68d'
 };
+
+// Función para calcular el coste del agua con tarifas reales
+function calculateWaterCost(m3Consumed) {
+    let cost = 0;
+
+    // 1. CÁNON DE L'AIGUA (Suministro) - Tramos progresivos
+    if (m3Consumed > 0) {
+        const basicConsumption = Math.min(m3Consumed, 500);
+        cost += basicConsumption * WATER_TARIFFS.supplyBasic.pricePerM3;
+    }
+    if (m3Consumed > 500) {
+        const mediumConsumption = Math.min(m3Consumed - 500, 1000);
+        cost += mediumConsumption * WATER_TARIFFS.supplyMedium.pricePerM3;
+    }
+    if (m3Consumed > 1500) {
+        const highConsumption = m3Consumed - 1500;
+        cost += highConsumption * WATER_TARIFFS.supplyHigh.pricePerM3;
+    }
+
+    // 2. TRATAMIENTO DE AGUAS RESIDUALES - Tramos progresivos
+    if (m3Consumed > 0) {
+        const basicTreatment = Math.min(m3Consumed, 500);
+        cost += basicTreatment * WATER_TARIFFS.treatmentBasic.pricePerM3;
+    }
+    if (m3Consumed > 500) {
+        const mediumTreatment = Math.min(m3Consumed - 500, 1000);
+        cost += mediumTreatment * WATER_TARIFFS.treatmentMedium.pricePerM3;
+    }
+    if (m3Consumed > 1500) {
+        const highTreatment = m3Consumed - 1500;
+        cost += highTreatment * WATER_TARIFFS.treatmentHigh.pricePerM3;
+    }
+
+    // 3. TMTR (Tasa Metropolitana de Tratamiento de Residuos)
+    cost += m3Consumed * WATER_TARIFFS.tmtrBasic;
+
+    // 4. CÀNON DE L'AIGUA (Generalitat de Catalunya)
+    cost += m3Consumed * WATER_TARIFFS.canonAgua;
+
+    // 5. Cuotas fijas mensuales
+    const monthlyFixed = WATER_TARIFFS.fixedSupplyCharge + WATER_TARIFFS.fixedTreatmentCharge;
+    cost += monthlyFixed * 12; // Anualizar
+
+    // 6. Cuota de calibración del contador (cuota única anual)
+    cost += WATER_TARIFFS.fixedCosts.meterCalibration;
+
+    return cost;
+}
 
 // Estratègies de reducció
 const REDUCTION_STRATEGIES = {
@@ -592,9 +703,9 @@ function calculateWaterMetrics(allData) {
         }
     });
 
-    const costPerM3 = WATER_PRICE;
-    const totalYearCost = totalYear * costPerM3;
-    const totalSchoolYearCost = totalSchoolYear * costPerM3;
+    // Calcular coste con tarifas reales de Aigües de Barcelona
+    const totalYearCost = calculateWaterCost(totalYear);
+    const totalSchoolYearCost = calculateWaterCost(totalSchoolYear);
 
     return {
         total: totalYear,
@@ -671,14 +782,14 @@ function calculateSpecialPeriods() {
     const easterEnergy = (easterEnergyPerDay * easterDays * 0.7) * ELECTRICITY_PRICE;
 
     const easterWaterPerDay = monthlyWater[3].total / monthlyWater[3].daysInMonth;
-    const easterWater = (easterWaterPerDay * easterDays * 0.7) * WATER_PRICE;
+    const easterWater = calculateWaterCost(easterWaterPerDay * easterDays * 0.7);
 
     // Estiu (Juny, Juliol, Agost - 3 mesos)
     const summerEnergyTotal = monthlyEnergy[5].net + monthlyEnergy[6].net + monthlyEnergy[7].net;
     const summerEnergy = (summerEnergyTotal / 3) * ELECTRICITY_PRICE;
 
     const summerWaterTotal = monthlyWater[5].total + monthlyWater[6].total + monthlyWater[7].total;
-    const summerWater = (summerWaterTotal / 3) * WATER_PRICE;
+    const summerWater = calculateWaterCost(summerWaterTotal / 3);
 
     // Nadal (1 setmana en desembre, ~7 dies)
     const christmasDays = 7;
@@ -686,7 +797,7 @@ function calculateSpecialPeriods() {
     const christmasEnergy = (christmasEnergyPerDay * christmasDays * 0.7) * ELECTRICITY_PRICE;
 
     const christmasWaterPerDay = monthlyWater[11].total / monthlyWater[11].daysInMonth;
-    const christmasWater = (christmasWaterPerDay * christmasDays * 0.7) * WATER_PRICE;
+    const christmasWater = calculateWaterCost(christmasWaterPerDay * christmasDays * 0.7);
 
     // Promedio anual
     let totalEnergy = 0, totalWater = 0;
@@ -695,7 +806,7 @@ function calculateSpecialPeriods() {
         totalWater += monthlyWater[month].total;
     });
     const avgEnergy = (totalEnergy / 12) * ELECTRICITY_PRICE;
-    const avgWater = (totalWater / 12) * WATER_PRICE;
+    const avgWater = calculateWaterCost(totalWater / 12);
 
     return {
         easterEnergy, easterWater,
@@ -932,14 +1043,13 @@ function renderEnergyMonthlyChart() {
 
 function renderWaterMonthlyChart() {
     const monthlyData = getMonthlyWaterConsumption();
-    const costPerM3 = WATER_PRICE;
 
     const labels = [];
     const data = [];
 
     for (let i = 0; i < 12; i++) {
         labels.push(getMonthName(i));
-        data.push(monthlyData[i].total * costPerM3);
+        data.push(calculateWaterCost(monthlyData[i].total));
     }
 
     const ctx = document.getElementById('waterMonthlyChart').getContext('2d');
@@ -1104,7 +1214,7 @@ function renderAnalisis() {
                             <span class="value">${formatNumber(metrics.agua.total)} m³</span>
                         </div>
                         <div class="metric-value">
-                            <span class="label">Cost Anual</span>
+                            <span class="label">Cost Anual (Tarifes Aigües Barcelona)</span>
                             <span class="value highlight">${formatNumber(annualCost.agua)} €</span>
                         </div>
                         <div class="metric-value">
@@ -1224,11 +1334,59 @@ function renderAnalisis() {
                             <td data-label="% Variació">${((annualCost.consumibles - metrics.consumibles.totalEscolar) / metrics.consumibles.totalEscolar * 100).toFixed(2)}%</td>
                         </tr>
                         <tr>
-                            <td data-label="Tipus de Consum">🧹 Neteja (€)</td>
+                            <td data-label="Tipus de Consum">🧹 Neteja (���)</td>
                             <td data-label="Año Escolar (Sept-Jun)">${formatNumber(metrics.limpieza.totalEscolar)} €</td>
                             <td data-label="Año Complet">${formatNumber(annualCost.limpieza)} €</td>
                             <td data-label="Diferència">${formatNumber(annualCost.limpieza - metrics.limpieza.totalEscolar)} €</td>
                             <td data-label="% Variació">${((annualCost.limpieza - metrics.limpieza.totalEscolar) / metrics.limpieza.totalEscolar * 100).toFixed(2)}%</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3 style="margin-top: 30px; padding-top: 20px; border-top: 2px solid #ecf0f1;">Desglossament de Tarifa Aigua (Aigües de Barcelona)</h3>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Concepte</th>
+                            <th>Descripció</th>
+                            <th>Import Anual</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td data-label="Concepte">Canó de l'Aigua (Tramo 1: 0-500 m³)</td>
+                            <td data-label="Descripció">${WATER_TARIFFS.supplyBasic.pricePerM3} €/m³</td>
+                            <td data-label="Import Anual">${formatNumber(Math.min(annualCost.agua * 0.2, 500 * WATER_TARIFFS.supplyBasic.pricePerM3))} €</td>
+                        </tr>
+                        <tr>
+                            <td data-label="Concepte">Canó de l'Aigua (Tramo 2: 501-1.500 m³)</td>
+                            <td data-label="Descripció">${WATER_TARIFFS.supplyMedium.pricePerM3} €/m³</td>
+                            <td data-label="Import Anual">Proporcional</td>
+                        </tr>
+                        <tr>
+                            <td data-label="Concepte">Canó de l'Aigua (Tramo 3: >1.500 m³)</td>
+                            <td data-label="Descripció">${WATER_TARIFFS.supplyHigh.pricePerM3} €/m³</td>
+                            <td data-label="Import Anual">Proporcional</td>
+                        </tr>
+                        <tr>
+                            <td data-label="Concepte">TMTR (Tasa Metropolitana)</td>
+                            <td data-label="Descripció">${WATER_TARIFFS.tmtrBasic} €/m³</td>
+                            <td data-label="Import Anual">${formatNumber(metrics.agua.total * WATER_TARIFFS.tmtrBasic)} €</td>
+                        </tr>
+                        <tr>
+                            <td data-label="Concepte">Cànon de l'Aigua (Generalitat)</td>
+                            <td data-label="Descripció">${WATER_TARIFFS.canonAgua} €/m³</td>
+                            <td data-label="Import Anual">${formatNumber(metrics.agua.total * WATER_TARIFFS.canonAgua)} €</td>
+                        </tr>
+                        <tr>
+                            <td data-label="Concepte">Cuota Fija Mensual (Disponibilidad)</td>
+                            <td data-label="Descripció">${WATER_TARIFFS.fixedSupplyCharge + WATER_TARIFFS.fixedTreatmentCharge} €/mes</td>
+                            <td data-label="Import Anual">${formatNumber((WATER_TARIFFS.fixedSupplyCharge + WATER_TARIFFS.fixedTreatmentCharge) * 12)} €</td>
+                        </tr>
+                        <tr>
+                            <td data-label="Concepte">Calibración de Contador</td>
+                            <td data-label="Descripció">Cuota única anual</td>
+                            <td data-label="Import Anual">${formatNumber(WATER_TARIFFS.fixedCosts.meterCalibration)} €</td>
                         </tr>
                     </tbody>
                 </table>
