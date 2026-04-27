@@ -1334,7 +1334,7 @@ function renderAnalisis() {
                             <td data-label="% Variació">${((annualCost.consumibles - metrics.consumibles.totalEscolar) / metrics.consumibles.totalEscolar * 100).toFixed(2)}%</td>
                         </tr>
                         <tr>
-                            <td data-label="Tipus de Consum">🧹 Neteja (���)</td>
+                            <td data-label="Tipus de Consum">🧹 Neteja (€)</td>
                             <td data-label="Año Escolar (Sept-Jun)">${formatNumber(metrics.limpieza.totalEscolar)} €</td>
                             <td data-label="Año Complet">${formatNumber(annualCost.limpieza)} €</td>
                             <td data-label="Diferència">${formatNumber(annualCost.limpieza - metrics.limpieza.totalEscolar)} €</td>
