@@ -231,8 +231,8 @@ const REDUCTION_STRATEGIES = {
         actions: [
             {
                 id: 'agua_1',
-                title: 'Instal·lació de aixetes de baix flux',
-                description: 'Aixetes i dutxes amb aireadors que redueixen 30-50% del consum',
+                title: 'Instal·lació d\'\aixetes de baix flux',
+                description: 'Aixetes i dutxes amb airejadors que redueixen 30-50% del consum',
                 impact: 0.12,
                 timeline: 'Mes 1-3',
                 cost: 'Baix',
@@ -242,7 +242,7 @@ const REDUCTION_STRATEGIES = {
             {
                 id: 'agua_2',
                 title: 'Reparació de fuites',
-                description: 'Una fuga petita pot perder 200L/dia. Revisió trimestral',
+                description: 'Una fuga petita pot perdre 200L/dia. Revisió trimestral',
                 impact: 0.08,
                 timeline: 'Mes 1',
                 cost: 'Baix',
@@ -262,7 +262,7 @@ const REDUCTION_STRATEGIES = {
             {
                 id: 'agua_4',
                 title: 'Reutilització d\'aigües grises',
-                description: 'Sistemes per reutilitzar aigua de pluja i aires acondicionats',
+                description: 'Sistemes per reutilitzar aigua de pluja i aires condicionats',
                 impact: 0.03,
                 timeline: 'Mes 13-24',
                 cost: 'Alt',
@@ -337,7 +337,7 @@ const REDUCTION_STRATEGIES = {
             },
             {
                 id: 'limpieza_2',
-                title: 'Microfiber i tècniques de neteja en sec',
+                title: 'Microfibres i tècniques de neteja en sec',
                 description: 'Draps de microfibres redueixen ús d\'aigua i químics',
                 impact: 0.08,
                 timeline: 'Mes 2-4',
