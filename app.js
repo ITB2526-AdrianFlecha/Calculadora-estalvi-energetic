@@ -338,7 +338,7 @@ const REDUCTION_STRATEGIES = {
             {
                 id: 'limpieza_2',
                 title: 'Microfiber i tècniques de neteja en sec',
-                description: 'Trapos de microfiber redueixen ús d\'aigua i químics',
+                description: 'Draps de microfibres redueixen ús d\'aigua i químics',
                 impact: 0.08,
                 timeline: 'Mes 2-4',
                 cost: 'Baix',
@@ -1369,7 +1369,7 @@ function renderAnalisis() {
                             <td data-label="Import Anual">Proporcional</td>
                         </tr>
                         <tr>
-                            <td data-label="Concepte">TMTR (Tasa Metropolitana)</td>
+                            <td data-label="Concepte">TMTR (Taxa Metropolitana)</td>
                             <td data-label="Descripció">${WATER_TARIFFS.tmtrBasic} €/m³</td>
                             <td data-label="Import Anual">${formatNumber(metrics.agua.total * WATER_TARIFFS.tmtrBasic)} €</td>
                         </tr>
@@ -1379,7 +1379,7 @@ function renderAnalisis() {
                             <td data-label="Import Anual">${formatNumber(metrics.agua.total * WATER_TARIFFS.canonAgua)} €</td>
                         </tr>
                         <tr>
-                            <td data-label="Concepte">Quota Fija Mensual (Disponibilidad)</td>
+                            <td data-label="Concepte">Quota Fixa Mensual (Disponibilidad)</td>
                             <td data-label="Descripció">${WATER_TARIFFS.fixedSupplyCharge + WATER_TARIFFS.fixedTreatmentCharge} €/mes</td>
                             <td data-label="Import Anual">${formatNumber((WATER_TARIFFS.fixedSupplyCharge + WATER_TARIFFS.fixedTreatmentCharge) * 12)} €</td>
                         </tr>
