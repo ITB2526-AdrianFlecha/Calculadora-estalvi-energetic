@@ -332,7 +332,7 @@ const REDUCTION_STRATEGIES = {
                 impact: 0.10,
                 timeline: 'Mes 1-3',
                 cost: 'Baix',
-                measurable: 'Productes tòxics eliminats',
+                measurable: 'Productess tòxics eliminats',
                 enabled: false
             },
             {
