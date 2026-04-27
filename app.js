@@ -231,8 +231,8 @@ const REDUCTION_STRATEGIES = {
         actions: [
             {
                 id: 'agua_1',
-                title: 'Instal·lació de grifos de baix flux',
-                description: 'Grifos i dutxes amb aireadors que redueixen 30-50% del consum',
+                title: 'Instal·lació de aixetes de baix flux',
+                description: 'Aixetes i dutxes amb aireadors que redueixen 30-50% del consum',
                 impact: 0.12,
                 timeline: 'Mes 1-3',
                 cost: 'Baix',
@@ -332,7 +332,7 @@ const REDUCTION_STRATEGIES = {
                 impact: 0.10,
                 timeline: 'Mes 1-3',
                 cost: 'Baix',
-                measurable: 'Productess tòxics eliminats',
+                measurable: 'Productes tòxics eliminats',
                 enabled: false
             },
             {
