@@ -13,42 +13,42 @@ const ELECTRICITY_PRICE = 0.25; // €/kWh en Barcelona
 const WATER_TARIFFS = {
     // Suministro y alcantarillado - Tarifa no doméstica
     supplyBasic: {
-        name: 'Canó de l\'Aigua - Tramo 1',
+        name: 'Canó de l\'Aigua - Tram 1',
         range: '0-500 m³',
         pricePerM3: 1.45,
-        description: 'Primer tramo de consumo'
+        description: 'Primer tram de consumo'
     },
     supplyMedium: {
-        name: 'Canó de l\'Aigua - Tramo 2',
+        name: 'Canó de l\'Aigua - Tram 2',
         range: '501-1.500 m³',
         pricePerM3: 1.85,
-        description: 'Segundo tramo de consumo'
+        description: 'Segundo tram de consumo'
     },
     supplyHigh: {
-        name: 'Canó de l\'Aigua - Tramo 3',
+        name: 'Canó de l\'Aigua - Tram 3',
         range: '>1.500 m³',
         pricePerM3: 2.15,
-        description: 'Tercer tramo de consumo'
+        description: 'Tercer tram de consumo'
     },
 
     // Tratamiento de aguas residuales - Tarifa no doméstica
     treatmentBasic: {
-        name: 'Tractament d\'Aigües - Tramo 1',
+        name: 'Tractament d\'Aigües - Tram 1',
         range: '0-500 m³',
         pricePerM3: 1.25,
-        description: 'Tratamiento residuos primer tramo'
+        description: 'Tratamiento residuos primer tram'
     },
     treatmentMedium: {
-        name: 'Tractament d\'Aigües - Tramo 2',
+        name: 'Tractament d\'Aigües - Tram 2',
         range: '501-1.500 m³',
         pricePerM3: 1.65,
-        description: 'Tratamiento residuos segundo tramo'
+        description: 'Tratamiento residuos segundo tram'
     },
     treatmentHigh: {
-        name: 'Tractament d\'Aigües - Tramo 3',
+        name: 'Tractament d\'Aigües - Tram 3',
         range: '>1.500 m³',
         pricePerM3: 1.95,
-        description: 'Tratamiento residuos tercer tramo'
+        description: 'Tratamiento residuos tercer tram'
     },
 
     // Fixed costs
@@ -903,7 +903,7 @@ function renderDashboard() {
         <div class="dashboard">
             <div class="dashboard-header">
                 <h2>📊 Dashboard Principal</h2>
-                <p>Anàlisi de consumos i costos anuals</p>
+                <p>Anàlisi de consums i costos anuals</p>
             </div>
 
             <div class="kpi-container">
@@ -1164,7 +1164,7 @@ function renderAnalisis() {
         <div class="analysis-container">
             <div class="analysis-header">
                 <h2>📈 Anàlisi Detallat</h2>
-                <p>Desglossament de consumos i costos per període</p>
+                <p>Desglossament de consums i costos per període</p>
             </div>
 
             <div class="analysis-spacer"></div>
@@ -1354,17 +1354,17 @@ function renderAnalisis() {
                     </thead>
                     <tbody>
                         <tr>
-                            <td data-label="Concepte">Canó de l'Aigua (Tramo 1: 0-500 m³)</td>
+                            <td data-label="Concepte">Canó de l'Aigua (Tram 1: 0-500 m³)</td>
                             <td data-label="Descripció">${WATER_TARIFFS.supplyBasic.pricePerM3} €/m³</td>
                             <td data-label="Import Anual">${formatNumber(Math.min(annualCost.agua * 0.2, 500 * WATER_TARIFFS.supplyBasic.pricePerM3))} €</td>
                         </tr>
                         <tr>
-                            <td data-label="Concepte">Canó de l'Aigua (Tramo 2: 501-1.500 m³)</td>
+                            <td data-label="Concepte">Canó de l'Aigua (Tram 2: 501-1.500 m³)</td>
                             <td data-label="Descripció">${WATER_TARIFFS.supplyMedium.pricePerM3} €/m³</td>
                             <td data-label="Import Anual">Proporcional</td>
                         </tr>
                         <tr>
-                            <td data-label="Concepte">Canó de l'Aigua (Tramo 3: >1.500 m³)</td>
+                            <td data-label="Concepte">Canó de l'Aigua (Tram 3: >1.500 m³)</td>
                             <td data-label="Descripció">${WATER_TARIFFS.supplyHigh.pricePerM3} €/m³</td>
                             <td data-label="Import Anual">Proporcional</td>
                         </tr>
