@@ -214,7 +214,7 @@ const REDUCTION_STRATEGIES = {
             {
                 id: 'energia_4',
                 title: 'Auditoria energètica i formació',
-                description: 'Identificar consumos anòmals i conscienciar al personal',
+                description: 'Identificar consums anòmals i conscienciar al personal',
                 impact: 0.05,
                 timeline: 'Mes 1',
                 cost: 'Baix',
@@ -1171,7 +1171,7 @@ function renderAnalisis() {
 
             <div class="metrics-detailed">
                 <div class="metric-card-detailed">
-                    <h4>⚡ Energía - Año Complet</h4>
+                    <h4>⚡ Energía - Any Complet</h4>
                     <div class="metric-values">
                         <div class="metric-value">
                             <span class="label">Consum Anual</span>
@@ -1200,14 +1200,14 @@ function renderAnalisis() {
                             <span class="value highlight">${formatNumber(metrics.energia.totalEscolarCost)} €</span>
                         </div>
                         <div class="metric-value">
-                            <span class="label">% vs Año Complet</span>
+                            <span class="label">% vs Any Complet</span>
                             <span class="value highlight">${((metrics.energia.totalEscolarCost / annualCost.energia) * 100).toFixed(1)}%</span>
                         </div>
                     </div>
                 </div>
 
                 <div class="metric-card-detailed">
-                    <h4>💧 Aigua - Año Complet</h4>
+                    <h4>💧 Aigua - Any Complet</h4>
                     <div class="metric-values">
                         <div class="metric-value">
                             <span class="label">Consum Anual</span>
@@ -1236,14 +1236,14 @@ function renderAnalisis() {
                             <span class="value highlight">${formatNumber(metrics.agua.totalEscolarCost)} €</span>
                         </div>
                         <div class="metric-value">
-                            <span class="label">% vs Año Complet</span>
+                            <span class="label">% vs Any Complet</span>
                             <span class="value highlight">${((metrics.agua.totalEscolarCost / annualCost.agua) * 100).toFixed(1)}%</span>
                         </div>
                     </div>
                 </div>
 
                 <div class="metric-card-detailed">
-                    <h4>📄 Consumibles - Año Complet</h4>
+                    <h4>📄 Consumibles - Any Complet</h4>
                     <div class="metric-values">
                         <div class="metric-value">
                             <span class="label">Gast Anual</span>
@@ -1264,14 +1264,14 @@ function renderAnalisis() {
                             <span class="value">${formatNumber(metrics.consumibles.totalEscolar)} €</span>
                         </div>
                         <div class="metric-value">
-                            <span class="label">% vs Año Complet</span>
+                            <span class="label">% vs Any Complet</span>
                             <span class="value highlight">${((metrics.consumibles.totalEscolar / annualCost.consumibles) * 100).toFixed(1)}%</span>
                         </div>
                     </div>
                 </div>
 
                 <div class="metric-card-detailed">
-                    <h4>🧹 Neteja - Año Complet</h4>
+                    <h4>🧹 Neteja - Any Complet</h4>
                     <div class="metric-values">
                         <div class="metric-value">
                             <span class="label">Gast Anual</span>
@@ -1292,7 +1292,7 @@ function renderAnalisis() {
                             <span class="value">${formatNumber(metrics.limpieza.totalEscolar)} €</span>
                         </div>
                         <div class="metric-value">
-                            <span class="label">% vs Año Complet</span>
+                            <span class="label">% vs Any Complet</span>
                             <span class="value highlight">${((metrics.limpieza.totalEscolar / annualCost.limpieza) * 100).toFixed(1)}%</span>
                         </div>
                     </div>
@@ -1300,13 +1300,13 @@ function renderAnalisis() {
             </div>
 
             <div class="comparison-table-section">
-                <h3>Comparativa Año Escolar vs Año Complet</h3>
+                <h3>Comparativa Any Escolar vs Any Complet</h3>
                 <table class="comparison-table">
                     <thead>
                         <tr>
                             <th>Tipus de Consum</th>
-                            <th>Año Escolar (Sept-Jun)</th>
-                            <th>Año Complet</th>
+                            <th>Any Escolar (Sept-Jun)</th>
+                            <th>Any Complet</th>
                             <th>Diferència</th>
                             <th>% Variació</th>
                         </tr>
@@ -1314,29 +1314,29 @@ function renderAnalisis() {
                     <tbody>
                         <tr>
                             <td data-label="Tipus de Consum">⚡ Energía (€)</td>
-                            <td data-label="Año Escolar (Sept-Jun)">${formatNumber(metrics.energia.totalEscolarCost)} €</td>
-                            <td data-label="Año Complet">${formatNumber(annualCost.energia)} €</td>
+                            <td data-label="Any Escolar (Sept-Jun)">${formatNumber(metrics.energia.totalEscolarCost)} €</td>
+                            <td data-label="Any Complet">${formatNumber(annualCost.energia)} €</td>
                             <td data-label="Diferència">${formatNumber(annualCost.energia - metrics.energia.totalEscolarCost)} €</td>
                             <td data-label="% Variació">${((annualCost.energia - metrics.energia.totalEscolarCost) / metrics.energia.totalEscolarCost * 100).toFixed(2)}%</td>
                         </tr>
                         <tr>
                             <td data-label="Tipus de Consum">💧 Aigua (€)</td>
-                            <td data-label="Año Escolar (Sept-Jun)">${formatNumber(metrics.agua.totalEscolarCost)} €</td>
-                            <td data-label="Año Complet">${formatNumber(annualCost.agua)} €</td>
+                            <td data-label="Any Escolar (Sept-Jun)">${formatNumber(metrics.agua.totalEscolarCost)} €</td>
+                            <td data-label="Any Complet">${formatNumber(annualCost.agua)} €</td>
                             <td data-label="Diferència">${formatNumber(annualCost.agua - metrics.agua.totalEscolarCost)} €</td>
                             <td data-label="% Variació">${((annualCost.agua - metrics.agua.totalEscolarCost) / metrics.agua.totalEscolarCost * 100).toFixed(2)}%</td>
                         </tr>
                         <tr>
                             <td data-label="Tipus de Consum">📄 Consumibles (€)</td>
-                            <td data-label="Año Escolar (Sept-Jun)">${formatNumber(metrics.consumibles.totalEscolar)} €</td>
-                            <td data-label="Año Complet">${formatNumber(annualCost.consumibles)} €</td>
+                            <td data-label="Any Escolar (Sept-Jun)">${formatNumber(metrics.consumibles.totalEscolar)} €</td>
+                            <td data-label="Any Complet">${formatNumber(annualCost.consumibles)} €</td>
                             <td data-label="Diferència">${formatNumber(annualCost.consumibles - metrics.consumibles.totalEscolar)} €</td>
                             <td data-label="% Variació">${((annualCost.consumibles - metrics.consumibles.totalEscolar) / metrics.consumibles.totalEscolar * 100).toFixed(2)}%</td>
                         </tr>
                         <tr>
                             <td data-label="Tipus de Consum">🧹 Neteja (€)</td>
-                            <td data-label="Año Escolar (Sept-Jun)">${formatNumber(metrics.limpieza.totalEscolar)} €</td>
-                            <td data-label="Año Complet">${formatNumber(annualCost.limpieza)} €</td>
+                            <td data-label="Any Escolar (Sept-Jun)">${formatNumber(metrics.limpieza.totalEscolar)} €</td>
+                            <td data-label="Any Complet">${formatNumber(annualCost.limpieza)} €</td>
                             <td data-label="Diferència">${formatNumber(annualCost.limpieza - metrics.limpieza.totalEscolar)} €</td>
                             <td data-label="% Variació">${((annualCost.limpieza - metrics.limpieza.totalEscolar) / metrics.limpieza.totalEscolar * 100).toFixed(2)}%</td>
                         </tr>
@@ -1436,15 +1436,15 @@ function renderReductionCalculator() {
                             <span class="value">${formatNumber(metrics.baseline)} €</span>
                         </div>
                         <div class="value-card">
-                            <span class="label">Año 1 (2027)</span>
+                            <span class="label">Any 1 (2027)</span>
                             <span class="value">${formatNumber(metrics.year1)} €</span>
                         </div>
                         <div class="value-card">
-                            <span class="label">Año 2 (2028)</span>
+                            <span class="label">Any 2 (2028)</span>
                             <span class="value">${formatNumber(metrics.year2)} €</span>
                         </div>
                         <div class="value-card">
-                            <span class="label">Año 3 (2029)</span>
+                            <span class="label">Any 3 (2029)</span>
                             <span class="value">${formatNumber(metrics.year3)} €</span>
                         </div>
                     </div>
@@ -1527,7 +1527,7 @@ function renderReductionComparisonChart() {
     allCharts.reductionComparison = new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: ['Baseline 2026', 'Año 1 (2027)', 'Año 2 (2028)', 'Año 3 (2029)'],
+            labels: ['Baseline 2026', 'Any 1 (2027)', 'Any 2 (2028)', 'Any 3 (2029)'],
             datasets: [
                 {
                     label: 'Baseline (Sense Accions)',
