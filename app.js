@@ -433,7 +433,7 @@ function getMonthlyConsumption() {
         if (monthlyData[monthIndex].days > 0) {
             monthAvg = monthlyData[monthIndex].total / monthlyData[monthIndex].days;
         } else {
-            const avgDay = energyData.reduce((sum, item) => sum + (item.consumo_total_kWh || 0), 0) / energyData.length;
+            const avgDay = energyData.reduce((sum, item) => sum + (item.consumo_total_kWh || 0), 0) / (energyData.length || 1);
             monthAvg = avgDay;
         }
 
@@ -483,13 +483,12 @@ function getMonthlyWaterConsumption() {
         if (monthlyData[monthIndex].days > 0) {
             monthAvg = monthlyData[monthIndex].total / monthlyData[monthIndex].days;
         } else {
-            const avgDay = waterData.reduce((sum, item) => sum + ((item.consumo_litros || 0) / 1000), 0) / waterData.length;
+            const avgDay = waterData.reduce((sum, item) => sum + ((item.consumo_litros || 0) / 1000), 0) / (waterData.length || 1);
             monthAvg = avgDay;
         }
 
         const daysInMonth = new Date(2025, monthIndex + 1, 0).getDate();
-        // Afegir consumo de refrigeració de nuvola
-        const cloudWaterConsumption = (CLOUD_WATER_DAILY_CONSUMPTION * daysInMonth) / 1000; // Convertir a m³
+        const cloudWaterConsumption = (CLOUD_WATER_DAILY_CONSUMPTION * daysInMonth) / 1000;
         const adjustedConsumption = (monthAvg * daysInMonth * factor) + cloudWaterConsumption;
 
         monthlyConsumption[monthIndex] = {
@@ -504,24 +503,16 @@ function getMonthlyWaterConsumption() {
 function getMonthlyConsumablesConsumption() {
     const monthlyConsumption = {};
 
-    // Calcular promedio excluint mesos de vacacions (Setmana Santa, Estiu, Nadal)
-    const workingMonths = 12 - 4; // 12 mesos - aproximadament 4 mesos de vacacions parcials
-    const annualBudget = CONSUMABLES_MONTHLY_AVG * workingMonths;
-
     for (let i = 0; i < 12; i++) {
-        // Setmana Santa (Abril - mes 3): 50% de gasto
         if (i === EASTER_MONTH) {
             monthlyConsumption[i] = CONSUMABLES_MONTHLY_AVG * 0.5;
         }
-        // Estiu (Juny, Juliol, Agost - mesos 5, 6, 7): 0% de gasto
         else if (i === 5 || i === 6 || i === 7) {
             monthlyConsumption[i] = 0;
         }
-        // Nadal (Desembre - mes 11): 50% de gasto
         else if (i === CHRISTMAS_MONTH) {
             monthlyConsumption[i] = CONSUMABLES_MONTHLY_AVG * 0.5;
         }
-        // Resta de mesos: gasto normal
         else {
             monthlyConsumption[i] = CONSUMABLES_MONTHLY_AVG;
         }
@@ -533,7 +524,6 @@ function getMonthlyConsumablesConsumption() {
 function getMonthlyCleaning() {
     const monthlyConsumption = {};
 
-    // Limpieza es constant tot l'any (sueldo de treballadors + material)
     for (let i = 0; i < 12; i++) {
         monthlyConsumption[i] = CLEANING_MONTHLY_AVG;
     }
@@ -1213,32 +1203,32 @@ function renderAnalisis() {
                     </thead>
                     <tbody>
                         <tr>
-                            <td>⚡ Energía (€)</td>
-                            <td>${formatNumber(metrics.energia.totalEscolarCost)} €</td>
-                            <td>${formatNumber(annualCost.energia)} €</td>
-                            <td>${formatNumber(annualCost.energia - metrics.energia.totalEscolarCost)} €</td>
-                            <td>${((annualCost.energia - metrics.energia.totalEscolarCost) / metrics.energia.totalEscolarCost * 100).toFixed(2)}%</td>
+                            <td data-label="Tipus de Consum">⚡ Energía (€)</td>
+                            <td data-label="Año Escolar (Sept-Jun)">${formatNumber(metrics.energia.totalEscolarCost)} €</td>
+                            <td data-label="Año Complet">${formatNumber(annualCost.energia)} €</td>
+                            <td data-label="Diferència">${formatNumber(annualCost.energia - metrics.energia.totalEscolarCost)} €</td>
+                            <td data-label="% Variació">${((annualCost.energia - metrics.energia.totalEscolarCost) / metrics.energia.totalEscolarCost * 100).toFixed(2)}%</td>
                         </tr>
                         <tr>
-                            <td>💧 Aigua (€)</td>
-                            <td>${formatNumber(metrics.agua.totalEscolarCost)} €</td>
-                            <td>${formatNumber(annualCost.agua)} €</td>
-                            <td>${formatNumber(annualCost.agua - metrics.agua.totalEscolarCost)} €</td>
-                            <td>${((annualCost.agua - metrics.agua.totalEscolarCost) / metrics.agua.totalEscolarCost * 100).toFixed(2)}%</td>
+                            <td data-label="Tipus de Consum">💧 Aigua (€)</td>
+                            <td data-label="Año Escolar (Sept-Jun)">${formatNumber(metrics.agua.totalEscolarCost)} €</td>
+                            <td data-label="Año Complet">${formatNumber(annualCost.agua)} €</td>
+                            <td data-label="Diferència">${formatNumber(annualCost.agua - metrics.agua.totalEscolarCost)} €</td>
+                            <td data-label="% Variació">${((annualCost.agua - metrics.agua.totalEscolarCost) / metrics.agua.totalEscolarCost * 100).toFixed(2)}%</td>
                         </tr>
                         <tr>
-                            <td>📄 Consumibles (€)</td>
-                            <td>${formatNumber(metrics.consumibles.totalEscolar)} €</td>
-                            <td>${formatNumber(annualCost.consumibles)} €</td>
-                            <td>${formatNumber(annualCost.consumibles - metrics.consumibles.totalEscolar)} €</td>
-                            <td>${((annualCost.consumibles - metrics.consumibles.totalEscolar) / metrics.consumibles.totalEscolar * 100).toFixed(2)}%</td>
+                            <td data-label="Tipus de Consum">📄 Consumibles (€)</td>
+                            <td data-label="Año Escolar (Sept-Jun)">${formatNumber(metrics.consumibles.totalEscolar)} €</td>
+                            <td data-label="Año Complet">${formatNumber(annualCost.consumibles)} €</td>
+                            <td data-label="Diferència">${formatNumber(annualCost.consumibles - metrics.consumibles.totalEscolar)} €</td>
+                            <td data-label="% Variació">${((annualCost.consumibles - metrics.consumibles.totalEscolar) / metrics.consumibles.totalEscolar * 100).toFixed(2)}%</td>
                         </tr>
                         <tr>
-                            <td>🧹 Neteja (€)</td>
-                            <td>${formatNumber(metrics.limpieza.totalEscolar)} €</td>
-                            <td>${formatNumber(annualCost.limpieza)} €</td>
-                            <td>${formatNumber(annualCost.limpieza - metrics.limpieza.totalEscolar)} €</td>
-                            <td>${((annualCost.limpieza - metrics.limpieza.totalEscolar) / metrics.limpieza.totalEscolar * 100).toFixed(2)}%</td>
+                            <td data-label="Tipus de Consum">🧹 Neteja (€)</td>
+                            <td data-label="Año Escolar (Sept-Jun)">${formatNumber(metrics.limpieza.totalEscolar)} €</td>
+                            <td data-label="Año Complet">${formatNumber(annualCost.limpieza)} €</td>
+                            <td data-label="Diferència">${formatNumber(annualCost.limpieza - metrics.limpieza.totalEscolar)} €</td>
+                            <td data-label="% Variació">${((annualCost.limpieza - metrics.limpieza.totalEscolar) / metrics.limpieza.totalEscolar * 100).toFixed(2)}%</td>
                         </tr>
                     </tbody>
                 </table>
